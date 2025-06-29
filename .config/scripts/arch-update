@@ -272,43 +272,7 @@ def handle_click_events():
             except:
                 print("No updates available", file=subprocess.sys.stderr)
     
-    elif button == '3':  # Right click - Refresh/Check for updates
-        try:
-            # Try notification first
-            notification_sent = False
-            try:
-                subprocess.run(['notify-send', 'Package Updates', 
-                              'Refreshing package database...', '-t', '3000'], 
-                              check=False, timeout=5)
-                notification_sent = True
-            except:
-                pass
-            
-            if not notification_sent:
-                print("Right click detected: Refreshing package database...", file=subprocess.sys.stderr)
-            
-            # Refresh package database
-            result = subprocess.run(['sudo', 'pacman', '-Sy'], 
-                                  capture_output=True, text=True, timeout=30)
-            
-            if result.returncode == 0:
-                try:
-                    subprocess.run(['notify-send', 'Package Updates', 
-                                  'Package database refreshed', '-t', '2000'], 
-                                  check=False, timeout=5)
-                except:
-                    print("Package database refreshed successfully", file=subprocess.sys.stderr)
-            else:
-                try:
-                    subprocess.run(['notify-send', 'Package Updates', 
-                                  'Failed to refresh package database', '-t', '3000'], 
-                                  check=False, timeout=5)
-                except:
-                    print("Failed to refresh package database", file=subprocess.sys.stderr)
-        except subprocess.TimeoutExpired:
-            print("Package database refresh timed out", file=subprocess.sys.stderr)
-        except Exception as e:
-            print(f"Right click error: {e}", file=subprocess.sys.stderr)
+
 
 
 # Handle click events first
