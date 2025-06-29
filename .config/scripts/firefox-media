@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Firefox Media Control Block for i3blocks
+# Uses raw D-Bus commands (no playerctl dependency)
+
+# Find Firefox MPRIS instance
+FIREFOX_INSTANCE=$(dbus-send --session --dest=org.freedesktop.DBus --type=method_call --print-reply /org/freedesktop/DBus org.freedesktop.DBus.ListNames 2>/dev/null | grep -o "org\.mpris\.MediaPlayer2\.firefox[^\"]*" | head -1)
+
+if [[ -z "$FIREFOX_INSTANCE" ]]; then
+    echo "🎵 No media"
+    exit 0
+fi
+
+# Handle click events
+case $BLOCK_BUTTON in
+    1) # Left click - Play/Pause toggle
+        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause >/dev/null 2>&1
+        ;;
+    2) # Middle click - Next track
+        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next >/dev/null 2>&1
+        ;;
+    3) # Right click - Previous track  
+        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous >/dev/null 2>&1
+        ;;
+esac
+
+# Get playback status
+STATUS=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"PlaybackStatus" 2>/dev/null | grep -o '"[^"]*"$' | tr -d '"')
+
+# Set icon based on status
+case "$STATUS" in
+    "Playing") ICON="🎵" ;;
+    "Paused")  ICON="⏸️" ;;
+    *)         ICON="🎵" ;;
+esac
+
+# Get metadata
+METADATA=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Metadata" 2>/dev/null)
+
+# Extract title and artist
+TITLE=$(echo "$METADATA" | grep -A1 '"xesam:title"' | tail -1 | sed 's/.*string "\(.*\)"/\1/')
+ARTIST=$(echo "$METADATA" | grep -A3 '"xesam:artist"' | grep 'string' | tail -1 | sed 's/.*string "\(.*\)"/\1/')
+
+# Truncate if too long
+MAX_LENGTH=50
+if [[ ${#TITLE} -gt $MAX_LENGTH ]]; then
+    TITLE="${TITLE:0:$((MAX_LENGTH-3))}..."
+fi
+
+# Display format
+if [[ -n "$ARTIST" && "$ARTIST" != '""' ]]; then
+    echo "$ICON $TITLE - $ARTIST"
+else
+    echo "$ICON $TITLE"
+fi 
