@@ -251,20 +251,21 @@ bindsym XF86AudioPause exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
+# Screenshot keybinds using Print key (standard)
 # Full screen screenshot (saved to ~/Pictures)
-bindsym Ó exec --no-startup-id maim "/home/$USER/Pictures/$(date +'%Y%m%d-%H%M%S').png"
+bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date +'%Y%m%d-%H%M%S').png"
 
 # Active window screenshot (saved to ~/Pictures)
-bindsym $mod+Ó exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date +'%Y%m%d-%H%M%S').png"
+bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date +'%Y%m%d-%H%M%S').png"
 
 # Selection screenshot (saved to ~/Pictures)
-bindsym Shift+Ó exec --no-startup-id maim --select "/home/$USER/Pictures/$(date +'%Y%m%d-%H%M%S').png"
+bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date +'%Y%m%d-%H%M%S').png"
 
 # Full screen screenshot to clipboard
-bindsym Ctrl+Ó exec --no-startup-id maim | xclip -selection clipboard -t image/png
+bindsym Ctrl+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
 
 # Active window screenshot to clipboard
-bindsym Ctrl+$mod+Ó exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
 
 # Selection screenshot to clipboard
-bindsym Ctrl+Shift+Ó exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
+bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
