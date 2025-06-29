@@ -22,6 +22,7 @@ use Getopt::Long;
 my $t_warn = $ENV{T_WARN} || 70;
 my $t_crit = $ENV{T_CRIT} || 90;
 my $gpu_brand = $ENV{GPU_BRAND} || "NVIDIA";
+my $label = $ENV{LABEL} || "";
 my $gpu_usage = -1;
 my $gpu_mem = -1;
 my $gpu_video = -1;
@@ -53,7 +54,7 @@ if ($gpu_brand eq "NVIDIA") {
         }
     }
     close(NVS);
-    $full_text = sprintf "%.0f%% %.0f%% %.0f%% %.0f%%\n", $gpu_usage, $gpu_mem, $gpu_video, $gpu_pcie;
+    $full_text = sprintf "%s%.0f%% %.0f%% %.0f%% %.0f%%\n", $label, $gpu_usage, $gpu_mem, $gpu_video, $gpu_pcie;
 } 
 
 # For AMD, get from radeontop
@@ -67,14 +68,14 @@ elsif ($gpu_brand eq "AMD") {
         }
     }
     close(AMD);
-    $full_text = sprintf "%.0f%% %.0f%%\n", $gpu_usage, $gpu_mem;
+    $full_text = sprintf "%s%.0f%% %.0f%%\n", $label, $gpu_usage, $gpu_mem;
 }
 
 $gpu_usage eq -1 and die 'Can\'t find GPU information';
 
 # Print full_text, short_text
 print $full_text;
-printf "%.0f%%\n", $gpu_usage;
+printf "%s%.0f%%\n", $label, $gpu_usage;
 
 # Print color, if needed
 if ($gpu_usage >= $t_crit || $gpu_mem >= $t_crit || $gpu_video >= $t_crit || $gpu_pcie >= $t_crit) {
