@@ -22,6 +22,16 @@ case $BLOCK_BUTTON in
     3) # Right click - Previous track  
         dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous >/dev/null 2>&1
         ;;
+    4) # Scroll up - Volume up
+        CURRENT_VOL=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Volume" 2>/dev/null | grep -o 'double [0-9.]*' | cut -d' ' -f2)
+        NEW_VOL=$(awk "BEGIN {vol=$CURRENT_VOL + 0.1; if(vol > 1.0) vol = 1.0; print vol}" 2>/dev/null || echo "1.0")
+        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set string:"org.mpris.MediaPlayer2.Player" string:"Volume" variant:double:"$NEW_VOL" >/dev/null 2>&1
+        ;;
+    5) # Scroll down - Volume down
+        CURRENT_VOL=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Volume" 2>/dev/null | grep -o 'double [0-9.]*' | cut -d' ' -f2)
+        NEW_VOL=$(awk "BEGIN {vol=$CURRENT_VOL - 0.1; if(vol < 0.0) vol = 0.0; print vol}" 2>/dev/null || echo "0.0")
+        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set string:"org.mpris.MediaPlayer2.Player" string:"Volume" variant:double:"$NEW_VOL" >/dev/null 2>&1
+        ;;
 esac
 
 # Get playback status
@@ -41,15 +51,11 @@ METADATA=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --p
 TITLE=$(echo "$METADATA" | grep -A1 '"xesam:title"' | tail -1 | sed 's/.*string "\(.*\)"/\1/')
 ARTIST=$(echo "$METADATA" | grep -A3 '"xesam:artist"' | grep 'string' | tail -1 | sed 's/.*string "\(.*\)"/\1/')
 
-# Truncate if too long
-MAX_LENGTH=50
-if [[ ${#TITLE} -gt $MAX_LENGTH ]]; then
-    TITLE="${TITLE:0:$((MAX_LENGTH-3))}..."
+# Limit to 2 words maximum
+TITLE_WORDS=($TITLE)
+if [[ ${#TITLE_WORDS[@]} -gt 2 ]]; then
+    TITLE="${TITLE_WORDS[0]} ${TITLE_WORDS[1]}..."
 fi
 
-# Display format
-if [[ -n "$ARTIST" && "$ARTIST" != '""' ]]; then
-    echo "$ICON $TITLE - $ARTIST"
-else
-    echo "$ICON $TITLE"
-fi 
+# Display format - Keep it minimal with just title
+echo "$ICON $TITLE" 
