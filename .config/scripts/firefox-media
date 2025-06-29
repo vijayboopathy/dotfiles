@@ -11,36 +11,65 @@ if [[ -z "$FIREFOX_INSTANCE" ]]; then
     exit 0
 fi
 
+# Get capability properties
+CAN_GO_NEXT=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"CanGoNext" 2>/dev/null | grep -o "boolean [a-z]*" | cut -d' ' -f2)
+CAN_GO_PREVIOUS=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"CanGoPrevious" 2>/dev/null | grep -o "boolean [a-z]*" | cut -d' ' -f2)
+
+# Function to get Firefox sink input IDs
+get_firefox_sink_inputs() {
+    pactl list sink-inputs | grep -B 20 'application.name = "Firefox"' | grep "Sink Input #" | cut -d'#' -f2
+}
+
 # Handle click events
 case $BLOCK_BUTTON in
     1) # Left click - Play/Pause toggle
         dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause >/dev/null 2>&1
         ;;
-    2) # Middle click - Next track
-        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next >/dev/null 2>&1
+    2) # Middle click - Next track (only if supported)
+        if [[ "$CAN_GO_NEXT" == "true" ]]; then
+            dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next >/dev/null 2>&1
+        else
+            notify-send "Firefox Media" "Next track not available (single video/live stream)" -t 2000 2>/dev/null || true
+        fi
         ;;
-    3) # Right click - Previous track  
-        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous >/dev/null 2>&1
+    3) # Right click - Previous track (only if supported)
+        if [[ "$CAN_GO_PREVIOUS" == "true" ]]; then
+            dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous >/dev/null 2>&1
+        else
+            notify-send "Firefox Media" "Previous track not available (single video/live stream)" -t 2000 2>/dev/null || true
+        fi
         ;;
-    4) # Scroll up - Volume up
-        CURRENT_VOL=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Volume" 2>/dev/null | grep -o 'double [0-9.]*' | cut -d' ' -f2)
-        NEW_VOL=$(awk "BEGIN {vol=$CURRENT_VOL + 0.1; if(vol > 1.0) vol = 1.0; print vol}" 2>/dev/null || echo "1.0")
-        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set string:"org.mpris.MediaPlayer2.Player" string:"Volume" variant:double:"$NEW_VOL" >/dev/null 2>&1
+    4) # Scroll up - Volume up (PipeWire/PulseAudio)
+        for sink_input in $(get_firefox_sink_inputs); do
+            pactl set-sink-input-volume "$sink_input" +5% 2>/dev/null
+        done
         ;;
-    5) # Scroll down - Volume down
-        CURRENT_VOL=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Volume" 2>/dev/null | grep -o 'double [0-9.]*' | cut -d' ' -f2)
-        NEW_VOL=$(awk "BEGIN {vol=$CURRENT_VOL - 0.1; if(vol < 0.0) vol = 0.0; print vol}" 2>/dev/null || echo "0.0")
-        dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set string:"org.mpris.MediaPlayer2.Player" string:"Volume" variant:double:"$NEW_VOL" >/dev/null 2>&1
+    5) # Scroll down - Volume down (PipeWire/PulseAudio)
+        for sink_input in $(get_firefox_sink_inputs); do
+            pactl set-sink-input-volume "$sink_input" -5% 2>/dev/null
+        done
         ;;
 esac
 
 # Get playback status
 STATUS=$(dbus-send --session --dest="$FIREFOX_INSTANCE" --type=method_call --print-reply /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"PlaybackStatus" 2>/dev/null | grep -o '"[^"]*"$' | tr -d '"')
 
-# Set icon based on status
+# Set icon based on status and capabilities
 case "$STATUS" in
-    "Playing") ICON="🎵" ;;
-    "Paused")  ICON="⏸️" ;;
+    "Playing") 
+        if [[ "$CAN_GO_NEXT" == "true" || "$CAN_GO_PREVIOUS" == "true" ]]; then
+            ICON="🎵"  # Has playlist controls
+        else
+            ICON="▶️"  # Single video
+        fi
+        ;;
+    "Paused")  
+        if [[ "$CAN_GO_NEXT" == "true" || "$CAN_GO_PREVIOUS" == "true" ]]; then
+            ICON="⏸️"  # Has playlist controls
+        else
+            ICON="⏸️"  # Single video paused
+        fi
+        ;;
     *)         ICON="🎵" ;;
 esac
 
