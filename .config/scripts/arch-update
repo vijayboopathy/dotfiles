@@ -191,30 +191,72 @@ def handle_click_events():
             if len(pacman_updates) + len(aur_updates) > 15:
                 notification_text += f"\n... and {len(pacman_updates) + len(aur_updates) - 15} more"
             
+            # Try multiple notification methods
+            notification_sent = False
+            
+            # Method 1: Try notify-send
             try:
-                subprocess.run(['notify-send', 'Package Updates Available', 
-                              notification_text, '-t', '10000'], 
-                              check=False)
-            except:
+                result = subprocess.run(['notify-send', 'Package Updates Available', 
+                                      notification_text, '-t', '10000'], 
+                                      capture_output=True, text=True, timeout=5)
+                if result.returncode == 0:
+                    notification_sent = True
+            except (subprocess.TimeoutExpired, subprocess.CalledProcessError, FileNotFoundError):
                 pass
+            
+            # Method 2: Try zenity if notify-send failed
+            if not notification_sent:
+                try:
+                    subprocess.run(['zenity', '--info', '--text', 
+                                  f"Package Updates Available\n\n{notification_text}"], 
+                                  timeout=2, check=False)
+                    notification_sent = True
+                except (subprocess.TimeoutExpired, subprocess.CalledProcessError, FileNotFoundError):
+                    pass
+            
+            # Method 3: Fallback - Open terminal with package list
+            if not notification_sent:
+                try:
+                    cmd = f'echo "=== PACKAGE UPDATES AVAILABLE ===" && echo "{notification_text}" && echo && echo "Press Enter to close..." && read'
+                    subprocess.Popen(['kitty', '-e', 'bash', '-c', cmd])
+                    notification_sent = True
+                except:
+                    try:
+                        subprocess.Popen(['xterm', '-e', f'bash -c "{cmd}"'])
+                        notification_sent = True
+                    except:
+                        pass
+            
+            # Method 4: Last resort - write to temporary file and show path
+            if not notification_sent:
+                try:
+                    import tempfile
+                    with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+                        f.write("=== PACKAGE UPDATES AVAILABLE ===\n")
+                        f.write(notification_text)
+                        f.write(f"\n\nTotal: {len(pacman_updates) + len(aur_updates)} updates")
+                        print(f"Updates saved to: {f.name}", file=subprocess.sys.stderr)
+                except:
+                    # If all else fails, just print to stderr for debugging
+                    print(f"Left click detected: {len(pacman_updates) + len(aur_updates)} updates available", file=subprocess.sys.stderr)
         else:
             try:
                 subprocess.run(['notify-send', 'System Updates', 
-                              'No updates available'], check=False)
+                              'No updates available'], check=False, timeout=5)
             except:
-                pass
+                print("No updates available", file=subprocess.sys.stderr)
     
     elif button == '2':  # Middle click - Open terminal with update details
         if pacman_updates or aur_updates:
             cmd = 'echo "=== Available Updates ===" && '
             if pacman_updates:
-                cmd += 'echo "Pacman Updates:" && checkupdates && '
+                cmd += 'echo && echo "Pacman Updates:" && checkupdates && '
             if aur_updates:
                 if args.aur_yay:
-                    cmd += 'echo "AUR Updates (yay):" && yay -Qua && '
+                    cmd += 'echo && echo "AUR Updates (yay):" && yay -Qua && '
                 elif args.aur:
-                    cmd += 'echo "AUR Updates (yaourt):" && yaourt -Qua && '
-            cmd += 'echo "Press Enter to close..." && read'
+                    cmd += 'echo && echo "AUR Updates (yaourt):" && yaourt -Qua && '
+            cmd += 'echo && echo "Press Enter to close..." && read'
             
             try:
                 subprocess.Popen(['kitty', '-e', 'bash', '-c', cmd])
@@ -222,26 +264,51 @@ def handle_click_events():
                 try:
                     subprocess.Popen(['xterm', '-e', f'bash -c "{cmd}"'])
                 except:
-                    pass
+                    print("Middle click detected: Could not open terminal", file=subprocess.sys.stderr)
         else:
             try:
                 subprocess.Popen(['kitty', '-e', 'bash', '-c', 
                                 'echo "No updates available" && sleep 2'])
             except:
-                pass
+                print("No updates available", file=subprocess.sys.stderr)
     
     elif button == '3':  # Right click - Refresh/Check for updates
         try:
-            subprocess.run(['notify-send', 'Package Updates', 
-                          'Refreshing package database...', '-t', '3000'], 
-                          check=False)
+            # Try notification first
+            notification_sent = False
+            try:
+                subprocess.run(['notify-send', 'Package Updates', 
+                              'Refreshing package database...', '-t', '3000'], 
+                              check=False, timeout=5)
+                notification_sent = True
+            except:
+                pass
+            
+            if not notification_sent:
+                print("Right click detected: Refreshing package database...", file=subprocess.sys.stderr)
+            
             # Refresh package database
-            subprocess.run(['sudo', 'pacman', '-Sy'], check=False)
-            subprocess.run(['notify-send', 'Package Updates', 
-                          'Package database refreshed', '-t', '2000'], 
-                          check=False)
-        except:
-            pass
+            result = subprocess.run(['sudo', 'pacman', '-Sy'], 
+                                  capture_output=True, text=True, timeout=30)
+            
+            if result.returncode == 0:
+                try:
+                    subprocess.run(['notify-send', 'Package Updates', 
+                                  'Package database refreshed', '-t', '2000'], 
+                                  check=False, timeout=5)
+                except:
+                    print("Package database refreshed successfully", file=subprocess.sys.stderr)
+            else:
+                try:
+                    subprocess.run(['notify-send', 'Package Updates', 
+                                  'Failed to refresh package database', '-t', '3000'], 
+                                  check=False, timeout=5)
+                except:
+                    print("Failed to refresh package database", file=subprocess.sys.stderr)
+        except subprocess.TimeoutExpired:
+            print("Package database refresh timed out", file=subprocess.sys.stderr)
+        except Exception as e:
+            print(f"Right click error: {e}", file=subprocess.sys.stderr)
 
 
 # Handle click events first
