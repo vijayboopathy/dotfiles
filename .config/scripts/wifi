@@ -1,0 +1,156 @@
+#!/bin/bash
+# WiFi status block for i3blocks
+# Shows WiFi connection status, signal strength, and network name
+# Based on i3blocks-contrib wifi script
+
+# Configuration
+INTERFACE="${INTERFACE:-$(nmcli device status | grep wifi | grep -v p2p | head -1 | awk '{print $1}')}"
+LABEL="${LABEL:-📶}"
+
+# Color configuration
+COLOR_GOOD="${COLOR_GOOD:-#00FF00}"
+COLOR_WARN="${COLOR_WARN:-#FFFC00}"
+COLOR_CRIT="${COLOR_CRIT:-#FF0000}"
+COLOR_OFFLINE="${COLOR_OFFLINE:-#888888}"
+
+# Signal thresholds
+SIGNAL_GOOD="${SIGNAL_GOOD:-70}"
+SIGNAL_WARN="${SIGNAL_WARN:-40}"
+
+# Handle click events
+case $BLOCK_BUTTON in
+    1) # Left click - Open network manager
+        if command -v nm-connection-editor >/dev/null 2>&1; then
+            nm-connection-editor &
+        elif command -v nmtui >/dev/null 2>&1; then
+            kitty nmtui &
+        else
+            notify-send "WiFi" "No network manager GUI found" -t 3000 2>/dev/null || true
+        fi
+        ;;
+    2) # Middle click - Disconnect/Reconnect
+        CONNECTION=$(nmcli -t -f DEVICE,STATE device status | grep "^$INTERFACE:" | cut -d: -f2)
+        if [[ "$CONNECTION" == "connected" ]]; then
+            nmcli device disconnect "$INTERFACE" 2>/dev/null
+            notify-send "WiFi" "Disconnected from WiFi" -t 2000 2>/dev/null || true
+        else
+            nmcli device connect "$INTERFACE" 2>/dev/null
+            notify-send "WiFi" "Attempting to reconnect..." -t 2000 2>/dev/null || true
+        fi
+        ;;
+    3) # Right click - Show available networks
+        if command -v nmtui >/dev/null 2>&1; then
+            kitty nmtui &
+        else
+            NETWORKS=$(nmcli device wifi list | head -10)
+            notify-send "Available Networks" "$NETWORKS" -t 5000 2>/dev/null || true
+        fi
+        ;;
+    4) # Scroll up - Scan for networks
+        nmcli device wifi rescan 2>/dev/null
+        notify-send "WiFi" "Scanning for networks..." -t 2000 2>/dev/null || true
+        ;;
+    5) # Scroll down - Toggle WiFi
+        WIFI_STATE=$(nmcli radio wifi)
+        if [[ "$WIFI_STATE" == "enabled" ]]; then
+            nmcli radio wifi off
+            notify-send "WiFi" "WiFi disabled" -t 2000 2>/dev/null || true
+        else
+            nmcli radio wifi on
+            notify-send "WiFi" "WiFi enabled" -t 2000 2>/dev/null || true
+        fi
+        ;;
+esac
+
+# Check if WiFi is enabled
+WIFI_ENABLED=$(nmcli radio wifi)
+if [[ "$WIFI_ENABLED" != "enabled" ]]; then
+    echo "📵 WiFi Off"
+    echo "📵 WiFi Off"
+    echo "$COLOR_OFFLINE"
+    exit 0
+fi
+
+# Check if interface exists
+if [[ -z "$INTERFACE" ]]; then
+    echo "❌ No WiFi"
+    echo "❌ No WiFi"
+    echo "$COLOR_CRIT"
+    exit 0
+fi
+
+# Get connection info
+CONNECTION_INFO=$(nmcli -t -f DEVICE,STATE,CONNECTION device status | grep "^$INTERFACE:")
+CONNECTION_STATE=$(echo "$CONNECTION_INFO" | cut -d: -f2)
+CONNECTION_NAME=$(echo "$CONNECTION_INFO" | cut -d: -f3)
+
+if [[ "$CONNECTION_STATE" != "connected" ]]; then
+    case "$CONNECTION_STATE" in
+        "connecting")
+            echo "📶 Connecting..."
+            echo "📶 Connecting..."
+            echo "$COLOR_WARN"
+            ;;
+        "disconnected")
+            echo "📶 Disconnected"
+            echo "📶 Disc"
+            echo "$COLOR_OFFLINE"
+            ;;
+        *)
+            echo "📶 $CONNECTION_STATE"
+            echo "📶 $CONNECTION_STATE"
+            echo "$COLOR_WARN"
+            ;;
+    esac
+    exit 0
+fi
+
+# Get signal strength and details
+WIFI_INFO=$(nmcli -f SIGNAL,SSID device wifi list --rescan no | grep -E "^\s*[0-9]+" | head -1)
+if [[ -n "$WIFI_INFO" ]]; then
+    SIGNAL=$(echo "$WIFI_INFO" | awk '{print $1}')
+    SSID=$(echo "$WIFI_INFO" | awk '{for(i=2;i<=NF;i++) printf "%s ", $i; print ""}' | sed 's/[[:space:]]*$//')
+else
+    # Fallback: try to get info from active connection
+    SIGNAL=$(nmcli -f IN-USE,SIGNAL,SSID device wifi list | grep "^\*" | awk '{print $2}')
+    SSID=$(nmcli -f IN-USE,SSID device wifi list | grep "^\*" | awk '{for(i=2;i<=NF;i++) printf "%s ", $i; print ""}' | sed 's/[[:space:]]*$//')
+fi
+
+# Use connection name if SSID is empty
+if [[ -z "$SSID" || "$SSID" == "--" ]]; then
+    SSID="$CONNECTION_NAME"
+fi
+
+# Default signal if not available
+if [[ -z "$SIGNAL" || "$SIGNAL" == "--" ]]; then
+    SIGNAL="0"
+fi
+
+# Determine signal icon and color
+if [[ $SIGNAL -ge $SIGNAL_GOOD ]]; then
+    SIGNAL_ICON="📶"
+    COLOR="$COLOR_GOOD"
+elif [[ $SIGNAL -ge $SIGNAL_WARN ]]; then
+    SIGNAL_ICON="📶"
+    COLOR="$COLOR_WARN"
+else
+    SIGNAL_ICON="📶"
+    COLOR="$COLOR_CRIT"
+fi
+
+# Format SSID for display (limit length)
+SSID_SHORT="$SSID"
+if [[ ${#SSID} -gt 12 ]]; then
+    SSID_SHORT="${SSID:0:9}..."
+fi
+
+# Output format
+if [[ -n "$SSID" && "$SSID" != "--" ]]; then
+    echo "$SIGNAL_ICON $SSID_SHORT $SIGNAL%"
+    echo "$SIGNAL_ICON $SIGNAL%"
+else
+    echo "$SIGNAL_ICON Connected $SIGNAL%"
+    echo "$SIGNAL_ICON $SIGNAL%"
+fi
+
+echo "$COLOR" 
