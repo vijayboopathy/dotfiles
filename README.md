@@ -56,6 +56,26 @@ The status bar includes these sophisticated monitoring and control scripts:
 - **YouTube Link** - Direct browser launch to YouTube (orange gradient styling)
 - **Date/Time** - Real-time clock with full date display
 
+### 📸 Screenshot System
+Professional screenshot functionality with support for keyboards without Print key:
+
+**F11-Based Keybinds** (Compatible with all keyboards):
+- **`F11`** - Full screen screenshot → Saved to `~/Pictures/`
+- **`Shift + F11`** - Selection area screenshot → Saved to `~/Pictures/`
+- **`Alt + F11`** - Active window screenshot → Saved to `~/Pictures/`
+- **`Ctrl + F11`** - Full screen screenshot → Copied to clipboard
+- **`Ctrl + Shift + F11`** - Selection area screenshot → Copied to clipboard  
+- **`Ctrl + Alt + F11`** - Active window screenshot → Copied to clipboard
+
+**Technical Features**:
+- **Universal Compatibility**: F11 key works on all standard keyboards (including compact/60% layouts)
+- **Automatic Timestamping**: Files saved with format `YYYYMMDD-HHMMSS.png`
+- **Dual Output Options**: Save to file system or copy directly to clipboard
+- **Professional Tools**: Uses `maim` for capture, `xclip` for clipboard, `xdotool` for window detection
+- **No Conflicts**: Keybinds don't interfere with existing i3 shortcuts
+
+**Dependencies**: `maim`, `xclip`, `xdotool` (auto-installed during setup)
+
 ## 🎨 Visual Features
 
 ### Status Bar Styling
@@ -113,6 +133,9 @@ chmod +x ~/.config/scripts/*
 # Essential packages
 sudo pacman -S i3-wm i3blocks rofi kitty feh pipewire pipewire-pulse
 
+# Screenshot tools
+sudo pacman -S maim xclip xdotool
+
 # System monitoring tools
 sudo pacman -S nvidia-utils htop  # For GPU monitoring
 
@@ -168,6 +191,9 @@ vim ~/.config/i3blocks/i3blocks.conf
 - **feh** - Wallpaper setter
 - **pipewire + pipewire-pulse** - Audio system
 - **ttf-nerd-fonts-symbols** - Icon fonts
+- **maim** - Screenshot capture tool
+- **xclip** - Clipboard management for screenshots
+- **xdotool** - Window detection for screenshot targeting
 
 ### Optional Packages
 - **nvidia-utils** - For GPU monitoring (NVIDIA cards)
@@ -180,6 +206,7 @@ vim ~/.config/i3blocks/i3blocks.conf
 ✅ **Complete Desktop Environment** - Fully configured i3 setup  
 ✅ **Advanced System Monitoring** - CPU, RAM, GPU, disk space with intelligent alerting  
 ✅ **Professional Media Controls** - Smart Firefox integration with PipeWire audio  
+✅ **Universal Screenshot System** - F11-based keybinds compatible with all keyboards  
 ✅ **Modern Visual Design** - Nerd Font icons and consistent styling  
 ✅ **Efficient Performance** - Optimized update intervals and resource usage  
 ✅ **User-Friendly Feedback** - Clear notifications and status indicators  
