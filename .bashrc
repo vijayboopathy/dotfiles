@@ -23,4 +23,5 @@ alias ll='ls -lah'
 # Cursor command
 cursor() {
 	/home/vijay/Applications/cursor.appimage "$@"
-} 
+}
+export PATH="$HOME/.local/bin:$PATH"
