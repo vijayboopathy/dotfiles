@@ -88,6 +88,21 @@ def get_updates():
     return updates
 
 
+def get_updates_detailed():
+    """Get detailed update information with versions"""
+    output = ''
+    try:
+        output = check_output(['checkupdates']).decode('utf-8')
+    except subprocess.CalledProcessError as exc:
+        if not (exc.returncode == 2 and not exc.output):
+            raise exc
+    if not output:
+        return []
+
+    updates = [line.strip() for line in output.split('\n') if line.strip()]
+    return updates
+
+
 def get_aur_yaourt_updates():
     output = ''
     try:
@@ -116,6 +131,18 @@ def get_aur_yay_updates():
     return aur_updates
 
 
+def get_aur_yay_updates_detailed():
+    """Get detailed AUR update information with versions"""
+    try:
+        output = check_output(['yay', '-Qua']).decode('utf-8')
+        if not output:
+            return []
+        updates = [line.strip() for line in output.split('\n') if line.strip()]
+        return updates
+    except subprocess.CalledProcessError:
+        return []
+
+
 def matching_updates(updates, watch_list):
     matches = set()
     for u in updates:
@@ -125,6 +152,100 @@ def matching_updates(updates, watch_list):
 
     return matches
 
+
+def handle_click_events():
+    """Handle click events for i3blocks"""
+    button = os.environ.get('BLOCK_BUTTON', '')
+    
+    if not button:
+        return
+    
+    args = create_argparse()
+    
+    # Get detailed updates for display
+    pacman_updates = get_updates_detailed()
+    aur_updates = []
+    
+    if args.aur_yay:
+        aur_updates = get_aur_yay_updates_detailed()
+    elif args.aur:
+        try:
+            aur_output = check_output(['yaourt', '-Qua']).decode('utf-8')
+            aur_updates = [line.strip() for line in aur_output.split('\n') 
+                          if line.strip() and line.startswith('aur/')]
+        except subprocess.CalledProcessError:
+            pass
+    
+    if button == '1':  # Left click - Show update details
+        if pacman_updates or aur_updates:
+            update_list = []
+            if pacman_updates:
+                update_list.append("=== Pacman Updates ===")
+                update_list.extend(pacman_updates)
+            if aur_updates:
+                update_list.append("=== AUR Updates ===")
+                update_list.extend(aur_updates)
+            
+            # Create notification with package list
+            notification_text = '\n'.join(update_list[:15])  # Limit to 15 lines
+            if len(pacman_updates) + len(aur_updates) > 15:
+                notification_text += f"\n... and {len(pacman_updates) + len(aur_updates) - 15} more"
+            
+            try:
+                subprocess.run(['notify-send', 'Package Updates Available', 
+                              notification_text, '-t', '10000'], 
+                              check=False)
+            except:
+                pass
+        else:
+            try:
+                subprocess.run(['notify-send', 'System Updates', 
+                              'No updates available'], check=False)
+            except:
+                pass
+    
+    elif button == '2':  # Middle click - Open terminal with update details
+        if pacman_updates or aur_updates:
+            cmd = 'echo "=== Available Updates ===" && '
+            if pacman_updates:
+                cmd += 'echo "Pacman Updates:" && checkupdates && '
+            if aur_updates:
+                if args.aur_yay:
+                    cmd += 'echo "AUR Updates (yay):" && yay -Qua && '
+                elif args.aur:
+                    cmd += 'echo "AUR Updates (yaourt):" && yaourt -Qua && '
+            cmd += 'echo "Press Enter to close..." && read'
+            
+            try:
+                subprocess.Popen(['kitty', '-e', 'bash', '-c', cmd])
+            except:
+                try:
+                    subprocess.Popen(['xterm', '-e', f'bash -c "{cmd}"'])
+                except:
+                    pass
+        else:
+            try:
+                subprocess.Popen(['kitty', '-e', 'bash', '-c', 
+                                'echo "No updates available" && sleep 2'])
+            except:
+                pass
+    
+    elif button == '3':  # Right click - Refresh/Check for updates
+        try:
+            subprocess.run(['notify-send', 'Package Updates', 
+                          'Refreshing package database...', '-t', '3000'], 
+                          check=False)
+            # Refresh package database
+            subprocess.run(['sudo', 'pacman', '-Sy'], check=False)
+            subprocess.run(['notify-send', 'Package Updates', 
+                          'Package database refreshed', '-t', '2000'], 
+                          check=False)
+        except:
+            pass
+
+
+# Handle click events first
+handle_click_events()
 
 label = os.environ.get("LABEL","")
 message = "{0}<span color='{1}'>{2}</span>"
