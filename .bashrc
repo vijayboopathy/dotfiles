@@ -17,8 +17,9 @@ export LC_ALL=en_US.UTF-8
 # Set kitty as the terminal
 TERMINAL=kitty
 
-# List
+# Aliases
 alias ll='ls -lah'
+alias vim='nvim'
 
 # Cursor command
 cursor() {
