@@ -222,7 +222,13 @@ bar {
 exec_always  /home/vijay/.screenlayout/virtual-2.sh
 
 # Display wallpaper using feh
-exec_always feh --bg-fill /home/vijay/Pictures/Wallpapers/wallpaper1.jpg
+exec_always feh --bg-fill /home/vijay/Pictures/Wallpapers/wallpaper2.jpg
+
+# Greenclip clipboard manager - Insalled using yay
+exec_always --no-startup-id greenclip daemon
+
+# Access clipboard history
+bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard
 
 # Keybinding for Lock screen(i3lock)
 bindsym $mod+x exec i3lock
