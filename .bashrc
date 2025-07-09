@@ -34,3 +34,6 @@ export NVM_DIR="$HOME/.nvm"
 # Doom Emacs
 export PATH="$PATH:$HOME/.config/emacs/bin"
 alias emacs="emacsclient -c -a 'emacs'"
+
+# Fzf
+eval "$(fzf --bash)"
