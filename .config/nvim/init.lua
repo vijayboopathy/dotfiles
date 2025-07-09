@@ -630,6 +630,9 @@ require("lazy").setup({
 						},
 					},
 				},
+
+				yamlls = {},
+				ansiblels = {},
 			}
 
 			-- Ensure the servers and tools above are installed
@@ -648,6 +651,9 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
+				"yamllint",
+				"ansible-lint",
+				"prettierd",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -700,6 +706,8 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				yaml = { "prettierd" },
+				ansible = { "prettierd" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
@@ -904,6 +912,7 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
+				"yaml",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
