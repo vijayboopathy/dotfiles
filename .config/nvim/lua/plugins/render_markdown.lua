@@ -11,7 +11,7 @@ return { -- Markdown preview
 			clear_on_delete = true,
 			render_images = {
 				enable = true,
-				-- image_renderer = "iterm",
+				image_renderer = "iterm",
 				image_width = 80,
 			},
 		})
