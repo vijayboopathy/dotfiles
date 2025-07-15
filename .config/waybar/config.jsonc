@@ -36,7 +36,7 @@
         "on-click": "activate",
         "format": "{icon}",
         "format-icons": {
-            "1": "󰎦", // Terminal
+            "1": "", // Terminal
             "2": "󰖟", // Browser
             "3": "󰉋", // Files
             "5": "󰙯", // Comms
@@ -94,33 +94,4 @@
         "on-click": "nm-connection-editor"
     },
 
-    "battery": {
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-plugged": "󰂄 {capacity}%",
-        "format-alt": "{icon} {time}",
-        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-    },
-
-    "power-profiles-daemon": {
-      "format": "{icon}",
-      "tooltip-format": "Power profile: {profile}",
-      "tooltip": true,
-      "format-icons": {
-        "default": "",
-        "performance": "",
-        "balanced": "",
-        "power-saver": " frugal"
-      }
-    },
-    
-    "custom/power": {
-        "format": "",
-        "tooltip": false,
-        "on-click": "wlogout"
-    }
 }
