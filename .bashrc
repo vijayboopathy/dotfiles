@@ -22,9 +22,9 @@ alias ll='ls -lah'
 alias vim='nvim'
 
 # Cursor command
-cursor() {
-	/home/vijay/Applications/cursor.appimage "$@"
-}
+#cursor() {
+#	/home/vijay/Applications/cursor.appimage "$@"
+#}
 export PATH="$HOME/.local/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
