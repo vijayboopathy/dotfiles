@@ -1,0 +1,4 @@
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 20
+theme = Builtin Tango Dark
+keybind = ctrl+shift+space=toggle_quick_terminal
