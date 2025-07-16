@@ -1,243 +1,118 @@
-# Dotfiles Repository
+# How to Set Up Dotfiles with GNU Stow on Arch Linux
 
-A comprehensive collection of configuration files and scripts for a fully-featured Arch Linux desktop environment using i3 window manager with advanced system monitoring and media controls.
+Managing configuration files doesn’t have to be messy. With GNU Stow, I can keep my dotfiles organized, modular, and easy to update—perfect for anyone running Arch Linux on a server (or desktop).
 
-## 🖥️ Desktop Environment Overview
+## What I'll Need
 
-This dotfiles repository provides:
-- **Window Manager**: i3 with custom keybindings and workspace configuration
-- **Status Bar**: i3blocks with comprehensive system monitoring and media controls
-- **Terminal**: Kitty terminal emulator with optimized configuration
-- **Launcher**: Rofi application launcher with custom theme
-- **Audio**: PipeWire integration with volume controls and device switching
-- **Theme**: GTK2 styling and wallpaper management
+- An Arch Linux installation
+- `git` and `stow` installed
+- Sudo or root privileges
 
-## 📁 Repository Structure
+To get started, make sure these tools are present:
 
-### Root Configuration Files
-- **`.bashrc`** - Shell configuration with aliases, environment variables, and custom prompt
-- **`.bash_profile`** - Login shell configuration that sources `.bashrc`
-- **`.xinitrc`** - X11 session startup script for i3 window manager
-- **`.gtkrc-2.0`** - GTK2 theme and appearance settings
-- **`.fehbg`** - Wallpaper restoration script for feh
-
-### Application Configurations (`.config/`)
-- **`i3/config`** - i3 window manager configuration (keybindings, workspaces, styling)
-- **`i3blocks/i3blocks.conf`** - Status bar configuration with custom blocks
-- **`i3status/i3status.conf`** - Alternative status bar configuration
-- **`rofi/config.rasi`** - Rofi launcher theme and behavior
-- **`kitty/kitty.conf`** - Kitty terminal emulator settings
-
-## 🔧 i3blocks Scripts & Features
-
-The status bar includes these sophisticated monitoring and control scripts:
-
-### 📦 System Monitoring
-- **`arch-update`** (Python) - Monitors pacman and AUR updates with notification system
-- **`cpu-usage`** (Bash) - Real-time CPU usage with color-coded warnings (50%/80% thresholds)
-- **`memory`** (Bash) - RAM usage monitoring with percentage and color indicators  
-- **`gpu-load`** (Bash) - NVIDIA GPU memory usage monitoring with temperature alerts
-- **`disk`** (Bash) - Disk space monitoring with low space warnings
-
-### 🎵 Media & Audio Controls
-- **`firefox-media`** (Bash) - Advanced Firefox media control with:
-  - Play/pause toggle (left click)
-  - Next/previous track (middle/right click) with smart capability detection
-  - Volume control via PipeWire (scroll wheel)
-  - Dynamic icons based on media type (single video vs playlist)
-  - User notifications for unsupported operations
-- **`volume-pipewire`** (Bash) - Comprehensive PipeWire audio management:
-  - Volume adjustment and mute toggle
-  - Audio device switching
-  - Visual volume indicators
-  - Click-to-cycle through audio devices
-
-### 🚀 Quick Access
-- **YouTube Link** - Direct browser launch to YouTube (orange gradient styling)
-- **Date/Time** - Real-time clock with full date display
-
-### 📸 Screenshot System
-Professional screenshot functionality with support for keyboards without Print key:
-
-**F11-Based Keybinds** (Compatible with all keyboards):
-- **`F11`** - Full screen screenshot → Saved to `~/Pictures/`
-- **`Shift + F11`** - Selection area screenshot → Saved to `~/Pictures/`
-- **`Alt + F11`** - Active window screenshot → Saved to `~/Pictures/`
-- **`Ctrl + F11`** - Full screen screenshot → Copied to clipboard
-- **`Ctrl + Shift + F11`** - Selection area screenshot → Copied to clipboard  
-- **`Ctrl + Alt + F11`** - Active window screenshot → Copied to clipboard
-
-**Technical Features**:
-- **Universal Compatibility**: F11 key works on all standard keyboards (including compact/60% layouts)
-- **Automatic Timestamping**: Files saved with format `YYYYMMDD-HHMMSS.png`
-- **Dual Output Options**: Save to file system or copy directly to clipboard
-- **Professional Tools**: Uses `maim` for capture, `xclip` for clipboard, `xdotool` for window detection
-- **No Conflicts**: Keybinds don't interfere with existing i3 shortcuts
-
-**Dependencies**: `maim`, `xclip`, `xdotool` (auto-installed during setup)
-
-## 🎨 Visual Features
-
-### Status Bar Styling
-- **Nerd Font Icons**: Professional iconography throughout (CPU: `󰻠`, Memory: `󰍛`, GPU: `󰾲`)
-- **Color-Coded Warnings**: Green/Yellow/Red system for resource monitoring
-- **Dynamic Icons**: Context-aware media controls (▶️ for videos, 🎵 for playlists)
-- **Consistent Spacing**: Professional layout with proper separators
-
-### Theme Integration
-- **Glass Morphism**: Backdrop blur effects where supported
-- **Gradient Accents**: Orange highlights for interactive elements
-- **Responsive Design**: Adapts to different screen sizes and DPI settings
-
-## ⚡ Advanced Features
-
-### Smart Media Control
-- **Capability Detection**: Only enables next/previous when media supports it
-- **PipeWire Integration**: Direct audio stream control bypassing broken MPRIS volume
-- **Multi-Stream Support**: Handles multiple Firefox audio streams simultaneously
-- **User Feedback**: Notifications explain why controls may be unavailable
-
-### System Monitoring Intelligence
-- **Threshold-Based Alerts**: Customizable warning levels for all monitored resources
-- **Efficient Updates**: Smart interval timing to balance responsiveness and performance
-- **Error Handling**: Graceful fallbacks when hardware monitoring fails
-- **Cross-Platform**: Works with both Intel and NVIDIA graphics
-
-### Audio System
-- **Device Auto-Detection**: Automatically discovers available audio devices
-- **Seamless Switching**: Click to cycle through headphones, speakers, etc.
-- **Volume Persistence**: Maintains per-device volume levels
-- **Visual Feedback**: Clear indication of current device and volume state
-
-## 🛠️ Installation
-
-### Quick Setup
 ```bash
-# Clone repository
-git clone git@github.com:vijayboopathy/dotfiles.git ~/Projects/dotfiles
-cd ~/Projects/dotfiles
-
-# Copy core dotfiles
-cp -v .bashrc .bash_profile .xinitrc .gtkrc-2.0 .fehbg ~/
-
-# Create config directories and copy files
-mkdir -p ~/.config/{i3,rofi,kitty,i3blocks,i3status,scripts}
-cp -rv .config/* ~/.config/
-
-# Make scripts executable
-chmod +x ~/.config/scripts/*
+sudo pacman -S git stow
 ```
 
-### Prerequisites
+## Cloning my Dotfiles Repo
+
+Pick a spot for my dotfiles (I prefer them in `~/Projects/dotfiles`). Clone my repository:
+
 ```bash
-# Essential packages
-sudo pacman -S i3-wm i3blocks rofi kitty feh pipewire pipewire-pulse
-
-# Screenshot tools
-sudo pacman -S maim xclip xdotool
-
-# System monitoring tools
-sudo pacman -S nvidia-utils htop  # For GPU monitoring
-
-# Font support
-sudo pacman -S ttf-nerd-fonts-symbols  # For icons
-
-# Optional: AUR helper for update monitoring
-yay -S paru  # or your preferred AUR helper
+git clone https://github.com/vijayboopathy/dotfiles.git ~/dotfiles
+cd ~/dotfiles
 ```
 
-## ⚙️ Customization
+## Setting Up my Dotfiles Directory
 
-### Resource Monitoring Thresholds
-Edit individual scripts to adjust warning levels:
-```bash
-# CPU usage warnings
-vim ~/.config/scripts/cpu-usage
-# Modify T_WARN=50 and T_CRIT=80
+For Stow to work its magic, put each application's config files in their own folder. Here’s a sample layout:
 
-# GPU temperature alerts  
-vim ~/.config/scripts/gpu-load
-# Modify T_WARN=70 and T_CRIT=90
+```
+dotfiles/
+ ├── bash/
+ │     ├── .bashrc
+ │     └── .bash_profile
+ ├── i3/
+ │     └── .config/i3/config
+ ├── kitty/
+ │     └── .config/kitty/kitty.conf
+ ├── rofi/
+ │     └── .config/rofi/config.rasi
+ ├── i3blocks/
+ │     └── .config/i3blocks/i3blocks.conf
+ └── ...
 ```
 
-### Audio Device Priority
+*Pro tip: If things aren’t structured like this in the repo, take a minute to tidy them up. It’ll save a lot of headaches later.*
+
+## Symlinking with Stow
+
+Now, it’s time to put Stow to work. From inside the `dotfiles` directory, run the following for each group of configuration files:
+
 ```bash
-# Customize device switching order
-vim ~/.config/scripts/volume-pipewire
-# Modify device detection logic as needed
+cd ~/dotfiles
+stow bash
+stow i3
+stow kitty
+stow rofi
+stow i3blocks
 ```
 
-### Media Control Behavior
+Stow will create symlinks in my home directory. For example, `~/dotfiles/bash/.bashrc` becomes `~/.bashrc`. If I want to remove a set of links, just run:
+
 ```bash
-# Adjust volume step size or notification timing
-vim ~/.config/scripts/firefox-media
-# Modify pactl volume increments (+5%) or notification duration (2000ms)
+stow -D i3
 ```
 
-### Status Bar Layout
+## Installing the Recommended Packages
+
+To get the most out of my configurations, I’ll want to have the following packages installed:
+
 ```bash
-# Reorder blocks or adjust intervals
-vim ~/.config/i3blocks/i3blocks.conf
-# Change interval values or block positions
+sudo pacman -S i3-wm i3blocks rofi kitty feh pipewire pipewire-pulse \
+  maim xclip xdotool nvidia-utils htop ttf-nerd-fonts-symbols
 ```
 
-## 🔧 Dependencies
+For AUR packages, I’ll need an AUR helper. If I don’t have `paru` yet:
 
-### Required Packages
-- **i3-wm** - Window manager
-- **i3blocks** - Status bar
-- **rofi** - Application launcher  
-- **kitty** - Terminal emulator
-- **feh** - Wallpaper setter
-- **pipewire + pipewire-pulse** - Audio system
-- **ttf-nerd-fonts-symbols** - Icon fonts
-- **maim** - Screenshot capture tool
-- **xclip** - Clipboard management for screenshots
-- **xdotool** - Window detection for screenshot targeting
-
-### Optional Packages
-- **nvidia-utils** - For GPU monitoring (NVIDIA cards)
-- **paru/yay** - AUR helper for update checking
-- **libnotify** - Desktop notifications
-- **pactl** - Audio control utility (usually included with pipewire)
-
-## 🎯 Key Features Summary
-
-✅ **Complete Desktop Environment** - Fully configured i3 setup  
-✅ **Advanced System Monitoring** - CPU, RAM, GPU, disk space with intelligent alerting  
-✅ **Professional Media Controls** - Smart Firefox integration with PipeWire audio  
-✅ **Universal Screenshot System** - F11-based keybinds compatible with all keyboards  
-✅ **Modern Visual Design** - Nerd Font icons and consistent styling  
-✅ **Efficient Performance** - Optimized update intervals and resource usage  
-✅ **User-Friendly Feedback** - Clear notifications and status indicators  
-✅ **Modular Architecture** - Easy to customize individual components  
-✅ **Cross-Hardware Support** - Works with various audio and graphics configurations  
-
-## 📝 Notes
-
-- **Wallpaper Path**: Ensure your wallpaper exists at `~/Pictures/Wallpapers/wallpaper1.jpg`
-- **Script Permissions**: All scripts in `.config/scripts/` must be executable
-- **GPU Monitoring**: Currently optimized for NVIDIA cards; modify `gpu-load` for AMD
-- **Audio Device Names**: PipeWire device names may vary; check with `pactl list sinks`
-- **Update Frequency**: Adjust i3blocks intervals based on your system performance needs
-
-## 🔄 Maintenance
-
-### Backup Current Configs
 ```bash
-# Before installation, backup existing configs
-cp ~/.bashrc ~/.bashrc.backup
-cp -r ~/.config ~/.config.backup
+yay -S paru
 ```
 
-### Update Repository
+## Extra Manual Steps
+
+A few things might need my attention after everything’s in place:
+
+- Make sure scripts are executable:
+  ```bash
+  chmod +x ~/.config/scripts/*
+  ```
+- Double-check hardware-specific settings (for example, NVIDIA configs if I monitor my GPU)
+- Verify wallpaper files such as `~/Pictures/Wallpapers/wallpaper1.jpg` exist
+- If I use custom audio setups, list devices:
+  ```bash
+  pactl list sinks
+  ```
+- Edit or tweak scripts in `~/.config/scripts/` for my resource monitors or audio preferences
+
+## Keeping Up to Date
+
+Whenever I update my dotfiles and want to pull in the changes:
+
 ```bash
-# To save new configurations
-cd ~/Projects/dotfiles
-cp ~/.config/scripts/* .config/scripts/
-cp ~/.config/i3blocks/i3blocks.conf .config/i3blocks/
-git add . && git commit -m "Update configurations"
-git push
+cd ~/dotfiles
+git pull
+stow 
 ```
 
-This dotfiles repository represents a production-ready, feature-complete Linux desktop environment with professional-grade system monitoring and media control capabilities.
+## A Few Final Tips
+
+- Always back up my original configs before I start. It’s easy:
+  ```bash
+  cp ~/.bashrc ~/.bashrc.backup
+  cp -r ~/.config ~/.config.backup
+  ```
+- Got conflicts with existing symlinks? Use `stow -v ` for detailed output and guidance.
+
+With my configurations sorted, managing and syncing settings across machines is much less stressful. Stow helps keep things tidy and portable, and my future self will thank myself.
+
