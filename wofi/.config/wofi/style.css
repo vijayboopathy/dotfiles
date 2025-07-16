@@ -1,21 +1,20 @@
 /* ~/.config/wofi/style.css */
-/* Raycast-like Transparent Theme */
+/* FINAL Raycast-like Transparent Theme */
 
 /* --- Color Definitions --- */
-@define-color bg rgba(30, 30, 46, 0.85);      /* Base background with 85% opacity */
-@define-color bg-hover rgba(30, 30, 46, 0.95); /* Slightly more opaque for the window */
-@define-color text #cdd6f4;                   /* Main text color (Catppuccin Text) */
-@define-color text-selected #1e1e2e;          /* Text color when entry is selected (Catppuccin Base) */
-@define-color border-color rgba(137, 180, 250, 0.4); /* Subtle border (Catppuccin Blue, 40% opacity) */
-@define-color selected #89b4fa;               /* Selected entry background (Catppuccin Blue) */
-@define-color separator #45475a;               /* Separator line color (Catppuccin Surface2) */
-
+@define-color bg rgba(30, 30, 46, 0.85);
+@define-color bg-hover rgba(30, 30, 46, 0.95);
+@define-color text #cdd6f4;
+@define-color text-selected #1e1e2e;
+@define-color border-color rgba(137, 180, 250, 0.4);
+@define-color selected #89b4fa;
+@define-color separator #45475a;
+@define-color entry-hover rgba(69, 71, 90, 0.5); /* Hover background */
 
 /* --- General --- */
 * {
     font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", sans-serif;
     font-size: 16px;
-    /* Reset all borders */
     border: none;
     border-radius: 0;
 }
@@ -24,16 +23,16 @@
 #window {
     background-color: @bg;
     border: 1px solid @border-color;
-    border-radius: 12px; /* Slightly rounded corners */
+    border-radius: 12px;
+    animation: slide-up 0.3s ease-in-out; /* Apply animation */
 }
 
 /* --- Input Bar --- */
 #input {
-    background-color: transparent; /* Input bar blends with the window */
+    background-color: transparent;
     color: @text;
     padding: 18px;
     margin: 0px;
-    /* The line that separates the input from the results */
     border-bottom: 1px solid @separator;
 }
 
@@ -46,14 +45,19 @@
     padding-top: 10px;
 }
 
-/* --- Individual Entry --- */
+/* --- Individual Entry Styling (FIX INCLUDED) --- */
 #entry {
+    background-color: transparent; /* This is the critical line for the hover fix */
     padding: 12px 18px;
-    border-radius: 8px; /* Slightly rounded corners for each entry */
+    border-radius: 8px;
 }
 
-/* --- Selected Entry --- */
-#entry:selected {
+#entry:hover {
+    /* background-color: @entry-hover; */
+    background-color: rgba(255, 0, 0, 0.9);
+}
+
+#entry:selected, #entry:selected:hover {
     background-color: @selected;
 }
 
@@ -68,4 +72,16 @@
 
 #entry image {
     margin-right: 12px;
+}
+
+/* --- Keyframe Animation --- */
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
