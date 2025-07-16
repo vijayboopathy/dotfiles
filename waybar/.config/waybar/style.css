@@ -69,6 +69,23 @@ window#waybar.hidden {
   margin-right: 6px;
 }
 
+#custom-nifty {
+    padding: 0 10px;
+    color: #ffffff; /* Default text color */
+}
+
+#custom-nifty.positive {
+    color: #4caf50; /* A nice green color */
+}
+
+#custom-nifty.negative {
+    color: #f44336; /* A nice red color */
+}
+
+#custom-nifty.neutral {
+    color: #9e9e9e; /* A grey color */
+}
+
 #custom-logo {
   padding-right: 7px;
   padding-left: 7px;

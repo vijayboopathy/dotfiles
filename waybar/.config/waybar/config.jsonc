@@ -12,6 +12,7 @@
     ],
     "modules-right": [
         "tray",
+	"custom/nifty",
         "memory",
         "network",
         "wireplumber",
@@ -135,6 +136,13 @@
     "custom/power": {
         "format": "󰤆",
         "tooltip": false,
-        "on-click": "~/.config/wofi/scripts/powermenu.sh &"
+        "on-click": "~/Projects/scripts/powermenu/powermenu.sh &"
+    },
+    "custom/nifty": {
+	"format": "{}",
+	"tooltip": true,
+	"interval": 1800, // Update every 30 minutes
+	"exec": "~/Projects/scripts/nifty-tracker/nifty_status.py",
+	"return-type": "json"
     }
 }
