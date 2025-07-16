@@ -1,4 +1,6 @@
 font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 20
-theme = Builtin Tango Dark
+theme = catppuccin-mocha
 keybind = ctrl+shift+space=toggle_quick_terminal
+mouse-hide-while-typing = true
+window-padding-balance = true
