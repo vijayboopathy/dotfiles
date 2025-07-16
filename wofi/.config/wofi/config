@@ -1,0 +1,48 @@
+# ~/.config/wofi/config
+
+#====================================================================
+# Basic Settings
+#====================================================================
+
+# Set the mode to drun for launching desktop applications.
+# Other options include `run` for commands.
+show=drun
+
+# Allow wofi to have images, this is for application icons
+allow_images=true
+
+#====================================================================
+# Window Geometry and Positioning
+#====================================================================
+
+# Make wofi a normal window. This helps with compositor effects
+# like blur and shadows in Sway/Hyprland.
+normal_window=true
+
+# Set the width and height of the wofi window.
+width=50%
+height=45%
+
+# Set the position on screen.
+# You can use presets like `center`, `top`, `bottom`, etc.
+# Or use exact pixel values. Let's center it.
+halign=center
+valign=center
+
+#====================================================================
+# Other Settings
+#====================================================================
+
+# The text to show in the prompt.
+prompt=Search Apps
+
+# Define the location of the stylesheet.
+# The path is relative to ~/.config/wofi/
+style=style.css
+
+# Case-insensitive search
+insensitive=true
+
+# Clear the search cache on exit.
+# Useful if your applications change often.
+# wofi --clear-cache

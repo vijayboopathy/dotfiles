@@ -1,0 +1,71 @@
+/* ~/.config/wofi/style.css */
+/* Raycast-like Transparent Theme */
+
+/* --- Color Definitions --- */
+@define-color bg rgba(30, 30, 46, 0.85);      /* Base background with 85% opacity */
+@define-color bg-hover rgba(30, 30, 46, 0.95); /* Slightly more opaque for the window */
+@define-color text #cdd6f4;                   /* Main text color (Catppuccin Text) */
+@define-color text-selected #1e1e2e;          /* Text color when entry is selected (Catppuccin Base) */
+@define-color border-color rgba(137, 180, 250, 0.4); /* Subtle border (Catppuccin Blue, 40% opacity) */
+@define-color selected #89b4fa;               /* Selected entry background (Catppuccin Blue) */
+@define-color separator #45475a;               /* Separator line color (Catppuccin Surface2) */
+
+
+/* --- General --- */
+* {
+    font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", sans-serif;
+    font-size: 16px;
+    /* Reset all borders */
+    border: none;
+    border-radius: 0;
+}
+
+/* --- Main Window --- */
+#window {
+    background-color: @bg;
+    border: 1px solid @border-color;
+    border-radius: 12px; /* Slightly rounded corners */
+}
+
+/* --- Input Bar --- */
+#input {
+    background-color: transparent; /* Input bar blends with the window */
+    color: @text;
+    padding: 18px;
+    margin: 0px;
+    /* The line that separates the input from the results */
+    border-bottom: 1px solid @separator;
+}
+
+/* --- Results List --- */
+#inner-box {
+    margin: 0 10px;
+}
+
+#scroll {
+    padding-top: 10px;
+}
+
+/* --- Individual Entry --- */
+#entry {
+    padding: 12px 18px;
+    border-radius: 8px; /* Slightly rounded corners for each entry */
+}
+
+/* --- Selected Entry --- */
+#entry:selected {
+    background-color: @selected;
+}
+
+#entry:selected #text {
+    color: @text-selected;
+}
+
+/* --- Text & Icons --- */
+#text {
+    color: @text;
+}
+
+#entry image {
+    margin-right: 12px;
+}
