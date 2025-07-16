@@ -1,22 +1,24 @@
 {
     "layer": "top",
     "position": "top",
-    "spacing": 0,
+    "spacing": 8,
     "height": 34,
     "modules-left": [
         "custom/logo",
         "hyprland/workspaces"
     ],
     "modules-center": [
-        "clock"
+        "hyprland/window"
     ],
     "modules-right": [
         "tray",
 	"custom/nifty",
+	"cpu",
         "memory",
         "network",
         "wireplumber",
         "battery",
+	"clock",
         "custom/power"
     ],
     "wlr/taskbar": {
@@ -52,10 +54,17 @@
             "5": []
         }
     },
+    "cpu": {
+	"format": "CPU: {usage}% 󰻠",
+	"tooltip": true,
+	"interval": 5,
+	"on-click": "btop"
+    },
     "memory": {
         "interval": 5,
-        "format": "󰍛 {}%",
-        "max-length": 10
+        "format": "MEM: {}% 󰍛",
+        "max-length": 10,
+	"on-click": "btop"
     },
     "tray": {
         "spacing": 10
