@@ -37,3 +37,6 @@ alias emacs="emacsclient -c -a 'emacs'"
 
 # Fzf
 eval "$(fzf --bash)"
+
+# Starship
+eval "$(starship init bash)"
