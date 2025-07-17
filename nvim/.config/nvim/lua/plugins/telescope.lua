@@ -53,5 +53,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		vim.keymap.set("n", "<leader>sn", function()
 			builtin.find_files({ cwd = vim.fn.stdpath("config") })
 		end, { desc = "[S]earch [N]eovim files" })
+
+		vim.keymap.set("n", "<leader>shf", function()
+			require("telescope.builtin").find_files({
+				find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*" },
+			})
+		end, { desc = "Find files (hidden)" })
 	end,
 }
