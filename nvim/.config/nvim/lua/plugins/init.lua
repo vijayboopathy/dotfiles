@@ -4,15 +4,15 @@
 local plugins = {
 	-- Simple plugins can be listed directly here as strings
 	"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
-	"nvim-lua/plenary.nvim",     -- Dependency for many plugins
+	"nvim-lua/plenary.nvim", -- Dependency for many plugins
 
 	-- Import plugins from individual files
 	require("plugins.gitsigns"),
 	require("plugins.whichkey"),
 	require("plugins.telescope"),
-	require("plugins.lsp"),        -- LSP setup (lspconfig, mason, etc.)
+	require("plugins.lsp"), -- LSP setup (lspconfig, mason, etc.)
 	require("plugins.conform"),
-	require("plugins.cmp"),         -- Completion (blink.cmp, luasnip, lazydev)
+	require("plugins.cmp"), -- Completion (blink.cmp, luasnip, lazydev)
 	require("plugins.colorscheme"), -- Your tokyonight setup
 	require("plugins.lualine"),
 	require("plugins.todo_comments"),

@@ -1,6 +1,6 @@
 -- General NeoVim options
 
--- vim.opt.shiftwidth = 4 -- Let GuessWidth define shiftwidth
+vim.opt.shiftwidth = 4 -- Let GuessWidth define shiftwidth
 
 -- Make line numbers default
 vim.o.number = true
