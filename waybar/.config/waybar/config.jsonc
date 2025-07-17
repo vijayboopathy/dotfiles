@@ -1,8 +1,26 @@
 {
+    // General Settings
+
+    // Position TOP
     "layer": "top",
-    "position": "top",
-    "spacing": 8,
-    "height": 34,
+    "margin-top": 14,
+    "margin-bottom": 0,
+
+    // Position BOTTOM
+    // "position": "bottom",
+    // "margin-top": 0,
+    // "margin-bottom": 14,
+
+    "spacing": 0,
+    "height": 16,
+    "margin-left": 0,
+    "margin-right": 0,
+
+    //Load Modules
+    "include": [
+	"~/.config/waybar/modules.json"
+    ],
+
     "modules-left": [
         "custom/logo",
         "hyprland/workspaces"

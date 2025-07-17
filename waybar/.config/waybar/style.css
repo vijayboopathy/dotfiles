@@ -3,10 +3,11 @@
   border-radius: 0;
   min-height: 0;
   font-family: JetBrainsMono Nerd Font;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 window#waybar {
+  /* background-color: #1e1e2e; This makes Waybar not transparent */
   background-color: transparent;
   color: #cdd6f4;
   transition-property: background-color;
@@ -70,6 +71,7 @@ window#waybar.hidden {
     color: #f38ba8 /* Red */
 }
 
+/* Style for every module */
 #workspaces,
 #custom-power,
 #battery,
@@ -78,12 +80,8 @@ window#waybar.hidden {
 #network,
 #clock,
 #tray {
-  border-radius: 4px;
-  margin: 4px 0px;
-  padding: 2px 12px;
-  background-color: #1e1e2e;
-  color: #cdd6f4;
-  border: 1px solid #313244;
+  margin: 0 3px;
+  padding: 0 10px;
 }
 
 #wireplumber,
@@ -145,6 +143,7 @@ window#waybar.hidden {
 
 #wireplumber {
   /* background-color: #f9e2af; */
+  border-left: 1px solid #45475a;
 }
 
 #network {
@@ -153,8 +152,8 @@ window#waybar.hidden {
 }
 
 #clock {
-  border-radius: 15px;
-  margin-right: 10px;
+  border-left: 1px solid #45475a;
+  border-right: 1px solid #45475a;
 }
 
 #custom-power {
