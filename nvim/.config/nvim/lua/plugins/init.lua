@@ -3,8 +3,14 @@
 -- This table will contain all your plugin specifications
 local plugins = {
 	-- Simple plugins can be listed directly here as strings
-	"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
+	-- "NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
 	"nvim-lua/plenary.nvim", -- Dependency for many plugins
+	{
+		"NMAC427/guess-indent.nvim",
+		opts = {
+			filetype_exclude = {},
+		},
+	},
 
 	-- Import plugins from individual files
 	require("plugins.gitsigns"),
