@@ -20,6 +20,7 @@ local plugins = {
 	require("plugins.treesitter"),
 	require("plugins.render_markdown"),
 	require("plugins.twilight"),
+	require("plugins.lazygit"),
 	-- Add more plugin requires here as you add new plugin files
 }
 

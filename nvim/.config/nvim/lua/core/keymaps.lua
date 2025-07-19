@@ -60,6 +60,13 @@ vim.o.confirm = true
 -- Change directory
 vim.keymap.set("n", "<leader>cd", vim.cmd.Ex, { desc = "Open file explorer (Ex mode)" })
 
+-- Launch LazyGit
+vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>", { desc = "Open lazygit" })
+
+-- Set jj and jk to escape insert mode
+vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
+vim.keymap.set("i", "jk", "<Esc>", { noremap = true, silent = true })
+
 -- Disable array keys for navigation
 vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
