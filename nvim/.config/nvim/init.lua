@@ -22,8 +22,6 @@ vim.opt.rtp:prepend(lazypath)
 require("core.options")
 require("core.keymaps")
 require("core.autocommands")
--- require("config.lazy")
-require("config.options")
 
 -- Load all plugins via lazy.nvim
 require("plugins")
