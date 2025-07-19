@@ -6,7 +6,7 @@ return {
 			dimming = {
 				alpha = 0.25, -- amount of dimming
 			},
-			context = 5,
+			context = 10,
 			treesitter = true,
 			expand = {
 				"function",
