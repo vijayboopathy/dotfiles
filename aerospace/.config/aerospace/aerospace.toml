@@ -40,8 +40,8 @@ after-startup-command = [
 
     # Consider using 'join-with' command as a 'split' replacement if you want to enable
     # normalizations
-    alt-h = 'split horizontal'
-    alt-v = 'split vertical'
+    alt-h = 'join-with left'
+    alt-v = 'join-with up'
 
     alt-f = 'fullscreen'
 
@@ -114,4 +114,8 @@ run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
 if.app-id = "com.mitchellh.ghostty"
-run = "move-node-to-workspace 3"
+run = [
+    # https://ghostty.org/docs/help/macos-tiling-wms
+    "layout floating",
+    "move-node-to-workspace 3"
+]
