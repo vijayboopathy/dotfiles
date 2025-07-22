@@ -27,6 +27,7 @@ local plugins = {
 	require("plugins.render_markdown"),
 	require("plugins.twilight"),
 	require("plugins.lazygit"),
+	require("plugins.colorizer"),
 	-- Add more plugin requires here as you add new plugin files
 }
 
