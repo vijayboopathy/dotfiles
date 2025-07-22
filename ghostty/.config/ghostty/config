@@ -1,7 +1,9 @@
 font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 20
-theme = catppuccin-mocha
+theme = catppuccin-frappe
 keybind = ctrl+shift+space=toggle_quick_terminal
 mouse-hide-while-typing = true
 window-padding-balance = true
 copy-on-select = clipboard
+cursor-invert-fg-bg = true
+# cursor-opacity=0.6
