@@ -28,6 +28,7 @@ local plugins = {
 	require("plugins.twilight"),
 	require("plugins.lazygit"),
 	require("plugins.colorizer"),
+	require("plugins.yazi"),
 	-- Add more plugin requires here as you add new plugin files
 }
 
