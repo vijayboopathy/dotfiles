@@ -56,3 +56,6 @@ vim.o.scrolloff = 10
 
 -- Confirm on quit if unsaved changes
 vim.o.confirm = true
+
+-- Select first suggestion from nvim-cmp
+vim.o.completeopt = "menuone,noinsert,preview"
