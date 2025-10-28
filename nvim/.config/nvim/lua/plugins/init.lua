@@ -29,6 +29,8 @@ local plugins = {
 	require("plugins.lazygit"),
 	require("plugins.colorizer"),
 	require("plugins.yazi"),
+	require("plugins.copilot"),
+	require("plugins.copilot_chat"),
 	-- Add more plugin requires here as you add new plugin files
 }
 
