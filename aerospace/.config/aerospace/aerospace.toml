@@ -96,14 +96,15 @@ after-startup-command = [
     esc = 'mode main'
 
 [workspace-to-monitor-force-assignment]
-"1" = "LG HDR 4K"
-"2" = "VG271U"
-"3" = "LG HDR 4K"
-"4" = "VG271U"
-"5" = "LG HDR 4K"
-"6" = "VG271U"
-"7" = "LG HDR 4K"
-"8" = "VG271U"
+"1" = "Built-in Display"
+"2" = "LG HDR 4K"
+"3" = "VG271U"
+"4" = "LG HDR 4K"
+"5" = "VG271U"
+"6" = "LG HDR 4K"
+"7" = "VG271U"
+"8" = "LG HDR 4K"
+"9" = "VG271U"
 
 [[on-window-detected]]
 if.app-id = "com.tinyspeck.slackmacgap"
