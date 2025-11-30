@@ -76,3 +76,6 @@ vim.keymap.set("v", "<left>", '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set("v", "<right>", '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set("v", "<up>", '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set("v", "<down>", '<cmd>echo "Use j to move!!"<CR>')
+
+-- Show diagnostics infor in a floating window
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror" })
