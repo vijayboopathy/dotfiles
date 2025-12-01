@@ -96,7 +96,7 @@ after-startup-command = [
     esc = 'mode main'
 
 [workspace-to-monitor-force-assignment]
-"1" = "Built-in Display"
+"1" = "Built-in Retina Display"
 "2" = "LG HDR 4K"
 "3" = "VG271U"
 "4" = "LG HDR 4K"
@@ -116,22 +116,22 @@ run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
 if.app-id = "app.zen-browser.zen"
-run = "move-node-to-workspace 3"
+run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
 if.app-id = "com.mitchellh.ghostty"
 run = [
     # https://ghostty.org/docs/help/macos-tiling-wms
     "layout floating",
-    "move-node-to-workspace 2"
+    "move-node-to-workspace 3"
 ]
 
 [[on-window-detected]]
 if.app-id = "com.microsoft.VSCode"
-run = "move-node-to-workspace 4"
+run = "move-node-to-workspace 5"
 
 [[on-window-detected]]
 if.app-id = "com.tidal.desktop"
-run = "move-node-to-workspace 5"
+run = "move-node-to-workspace 4"
 
 
