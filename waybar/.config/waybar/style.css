@@ -1,329 +1,121 @@
-/* style.css */
-
-/* --- FIX: Placing the universal selector first to initialize the parser --- */
-* {
-    font-family: "JetBrains Mono Nerd Font";
-    font-weight: bold; 
-    font-size: 15px;
+*{
+    font-family: "CaskaydiaCove Nerd Font", "Font Awesome 7 Free", "Font Awesome 7 Free Solid";
+    font-weight: bold;
+    font-size: 16px;
+    color: #dcdfe1;
 }
 
-/* --- COLOR DEFINITIONS (FIXED) --- */
-@define-color wb-color #E8EDF0;       
-@define-color wb-act-bg #2A2A38;      
-@define-color wb-act-color #A1BDCE;   
-@define-color wb-hvr-bg #353545;      
-@define-color wb-hvr-color #72D792;   
-@define-color bar-bg #0F0F17;         
-
-/* --- START OF MODULE STYLES --- */
-
-/* FIXED: Notification Icon Color and Opacity */
-#custom-notification {
-    font-family: "JetBrains Mono Nerd Font";
-    font-size: 17px;
-    color: #FFFFFF; /* Set to bright white */
-    opacity: 1.0; /* Ensure full visibility */
-    margin: 2px 0px 0px 0px;
+#waybar{
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    box-shadow: none;
 }
 
-window#waybar {
-    background: #0F0F17; 
-    border: 3px solid rgba(255, 255, 255, 0.1);
+#workspaces,
+#window,
+#tray{
+    background-color: rgba(15,27,53,0.9);
+    padding: 4px 6px;
+    margin-top: 6px;
+    margin-left: 6px;
+    margin-right: 6px;
+    border-radius: 10px;
+    border-width: 0px;
+}
+
+#network,
+#custom-clock{
+    background-color: rgba(15,27,53,0.9);
+    margin-top: 6px;
+    margin-left: 6px;
+    padding: 4px 2px;
+    border-radius: 10px 0 0 10px;
+    border-width: 0px;
+}
+
+
+/*#custom-reboot,*/
+#custom-media{
+    background-color: rgba(15,27,53,0.9);
+    padding: 4px 6px;
+    margin-top: 6px;
+    margin-left: 6px;
+    margin-right: 6px;
+    border-radius: 10px;
+    border-width: 0px;
+}
+
+
+#bluetooth,
+#battery,
+#pulseaudio,
+#custom-temperature,
+#memory,
+#cpu{
+    background-color: rgba(15,27,53,0.9);
+    margin-top: 6px;
+    padding: 4px 2px;
+    border-width: 0px;
+}
+
+#custom-temperature.critical,
+#pulseaudio.muted{
+    color: #FF0000;
+    padding-top: 0;
+}
+
+#custom-weather{
+    background-color: transparent;
+    padding: 4px 6px;
+    margin-top: 6px;
+    margin-left: 6px;
+    margin-right: 6px;
+    border-radius: 10px;
+    border-width: 0px;
+}
+
+#bluetooth:hover,
+#network:hover,
+#battery:hover,
+#pulseaudio:hover,
+#custom-temperature:hover,
+#memory:hover,
+#cpu:hover,
+#clock:hover,
+#custom-weather:hover,
+#custom-media:hover,
+#custom-lock:hover,
+#custom-reboot:hover,
+#custom-power:hover,
+#window:hover{
+    background-color: rgba(70, 75, 90, 0.9);
+}
+
+#workspaces button.hover{
+    background-color: rgba(97, 175, 239, 0.2);
+    padding: 2px 8px;
+    margin: 0 2px;
     border-radius: 10px;
 }
 
-tooltip {
-    background: #171717;
-    color: #A1BDCE;
-    font-size: 13px;
-    border-radius: 7px;
-    border: 2px solid #101a24;
+#workspaces button.active{
+    background-color: #61afef;
+    color: #ffffff;
+    padding: 2px 8px;
+    margin: 0 2px;
+    border-radius: 10px;
 }
 
-#workspaces{
-    background: rgba(23, 23, 23, 0.0);
-    color: #A1BDCE;
-    box-shadow: none;
-    text-shadow: none;
-    border-radius: 9px;
-    transition: 0.2s ease;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 1px;
-}
-
-#workspaces button {
-    background: rgba(23, 23, 23, 0.0);
-    color: #A1BDCE;
-    box-shadow: none;
-    text-shadow: none;
-    border-radius: 9px;
-    transition: 0.2s ease;
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-#workspaces button.active {
-    color: #A1BDCE;    
-    transition: all 0.3s ease;
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-#workspaces button:hover {
-    background: none;
-    color: #72D792;
-    animation: ws_hover 20s ease-in-out 1;
-    transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.682);
-}
-
-#taskbar button {
-    box-shadow: none;
-    text-shadow: none;
-    font-size: 4px;
-    padding: 0px;
-    border-radius: 9px;
-    margin-bottom: 3px;
-    margin-left: 0px;
-    padding-left: 3px;
-    padding-right: 3px;
-    margin-right: 0px;
-    color: @wb-color;
-    animation: tb_normal 20s ease-in-out 1;
-}
-
-#taskbar button.active {
-    background: @wb-act-bg;
-    color: @wb-act-color;
-    margin-left: 3px;
-    padding-left: 12px;
-    padding-right: 12px;
-    margin-right: 3px;
-    animation: tb_active 20s ease-in-out 1;
-    transition: all 0.4s cubic-bezier(.55,-0.68,.48,1.682);
-    min-height: 9px; 
-}
-
-#taskbar button:hover {
-    background: @wb-hvr-bg;
-    color: @wb-hvr-color;
-    animation: tb_hover 20s ease-in-out 1;
-    transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
-}
-
-#tray menu * {
-    min-height: 16px;
-    font-weight: bold;
-    font-size: 13px;
-    color: #9488e3;
-}
-
-#tray menu separator {
-    min-height: 10px;
-}
-
-#custom-spacer{
-    opacity: 0.0;
-}
-
-#custom-smallspacer{
-    opacity: 0.0;
-}
-
-#custom-power{
-    font-size: 15px;
-    color: #FFFFFF;
-    background:  rgba(22, 19, 32, 0.9);
-    margin: 6px 0px 6px 0px;
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-#backlight{
-    color: #2096C0;
-    background: rgba(23, 23, 23, 0.0);
-    font-weight: normal;
-    font-size: 19px;
-    margin: 1px 0px 0px 0px;
-    padding-left: 0px;
-    padding-right: 2px;
-}
-
-#custom-cliphist{
-    color: #E6E7E7;
-    background:  #161320;
-    opacity: 1;
-    margin: 4px 0px 4px 0px;
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-#idle_inhibitor{
-    color: #24966e;
-    background: @bar-bg;
-    opacity: 1;
-    margin: 4px 0px 4px 0px;
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-#clock{
-    color: #A1BDCE;
-    font-size: 15px;
-    font-weight: 900;
-    font-family: "JetBrains Mono Nerd Font";
-    background: rgba(23, 23, 23, 0.0);
-    opacity: 1;
-    margin: 3px 0px 0px 0px;
-    padding-left: 10px;
-    padding-right: 10px;
+#workspaces button{
+    background: transparent;
     border: none;
-}
-
-#pulseaudio{
-    font-weight: normal;
-    font-size: 18px;
-    color: #6F8FDB;
-    background:  rgba(22, 19, 32, 0.0);
-    opacity: 1;
-    margin: 0px 0px 0px 0px;
-    padding-left: 3px;
-    padding-right: 3px;
-}
-
-#cpu{
-    font-weight: normal;
-    font-size: 22px;
-    color: #915CAF;
-}
-
-#memory{
-    font-weight: normal;
-    font-size: 22px;
-    color: #E4C9AF;
-}
-
-#mpris{
-    color: white; 
-    animation: repeat;
-    animation-name: blink;
-    animation-duration: 3s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    font-size: 15px;
+    color: #888888;
+    padding: 2px 8px;
+    margin: 0 2px;
     font-weight: bold;
 }
 
-@keyframes blink {
-    to {
-        color: #4a4a4a; 
-    }
-}
-
-#network{
-    color: #A1BDCE;
-    font-weight: normal;
-    font-size: 19px;
-    padding-right: 0px;
-    padding-left: 4px;
-}
-
-#custom-spotify,
-#taskbar,
-#custom-theme,
-#custom-menu{
-    color: #E8EDF0;
-    background:  rgba(23, 23, 23, 0.0);
-    margin: 0px 0px 0px 0px;
-    padding-left: 1px;
-    padding-right: 1px;
-    opacity: 0.1; 
-}
-
-
-#tray {
-    color: #A1BDCE;
-    font-family: "Martian Mono";
-}
-
-#hyprland-window { 
-    color: #FFFFFF; /* Set to white for better visibility */
-    font-family: "Martian Mono";
-}
-
-#custom-l_end,
-#custom-r_end,
-#custom-sl_end,
-#custom-sr_end,
-#custom-rl_end,
-#upower#headset,
-#upower{
-    color: #a6d189;
-}
-
-
-#backlight-slider slider,
-#pulseaudio-slider slider {
-    background: #A1BDCE;
-    background-color: transparent;
-    box-shadow: none;
-    margin-right: 7px;
-}
-
-#backlight-slider trough,
-#pulseaudio-slider trough {
-    margin-top: -3px;
-    min-width: 90px;
-    min-height: 10px;
-    margin-bottom: -4px;
-    border-radius: 8px; 
-    background: #343434;
-}
-
-#backlight-slider highlight,
-#pulseaudio-slider highlight {
-    border-radius: 8px; 
-    background-color: #2096C0;
-}
-
-#taskbar {
-    padding: 1px;
-}
-
-#custom-r_end {
-    border-radius: 0px 7px 7px 0px;
-    margin-right: 1px;
-    padding-right: 3px;
-}
-
-#custom-l_end {
-    border-radius: 7px 0px 0px 7px;
-    margin-left: 1px;
-    padding-left: 3px;
-}
-
-#custom-sr_end {
-    border-radius: 0px;
-    margin-right: 1px;
-    padding-right: 3px;
-}
-
-#custom-sl_end {
-    border-radius: 0px;
-    margin-left: 1px;
-    padding-left: 3px;
-}
-
-/* Style for launchers */
-
-#custom-expand {
-    min-width: 25px;
-    color: #A1BDCE;
-    font-size: 16px;
-}
-
-#group-minimized {
-    border-left: solid;
-    border-left-width: 0.5;
+#window{
+    font-weight: 500;
+    font-style: italic;
 }

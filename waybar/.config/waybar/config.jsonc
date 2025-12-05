@@ -1,284 +1,158 @@
-// config.jsonc
-
-// ------------------------------------------------ //
-// -- WAYBAR CONFIGURATION WITH APPLIED FIXES -- //
-// ------------------------------------------------ //
-
+// inspiration: https://github.com/newemperor221/hyprland-dotfiles/blob/main/hypr_style1/waybar/config.jsonc
 {
-    // sourced from header module //
     "layer": "top",
     "position": "top",
-    "mod": "dock",
-    "margin-left": 10,
-    "margin-right": 10,
-    "margin-top": 7,
-    "margin-bottom": 0,
-    "exclusive": true,
-    "passthrough": false,
-    "gtk-layer-shell": true,
-    "reload_style_on_change": true,
-
-    // positions generated based on config.ctl //
-    "modules-left": ["custom/smallspacer","hyprland/workspaces","custom/spacer","mpris"],
-    "modules-center": ["custom/padd","custom/l_end","custom/r_end","hyprland/window","custom/padd"],
-    "modules-right": ["custom/padd","custom/l_end","group/expand","network","group/expand-3","group/expand-2","group/expand-4","memory","cpu","clock","custom/notification","custom/padd"],
-
-
-    // sourced from modules based on config.ctl //
-
-    "upower": {
-        "icon-size": 20,
-        "format": "{icon} {percentage}%", // FIX: Added default format
-        "format-alt": "{}<span color='orange'>[{time}]</span>",
-        "tooltip": true,
-        "tooltip-spacing": 20,
-        "on-click-right": "pkill waybar & hyprctl dispatch exec waybar"
-    },
-
-    "upower#headset": {
-        "format": " {percentage}",
-        "native-path": "/org/freedesktop/UPower/devices/headset_dev_A6_98_9A_0D_D3_49",
-        "show-icon": false,
-        "tooltip": false,
-    },
-
-    "group/expand-4": {
-        "orientation": "horizontal",
-        "drawer": {
-            "transition-duration": 600,
-            "children-class": "not-power",
-            "transition-to-left": true,
-            "click-to-reveal": true
-        },
-        "modules": ["upower", "upower#headset"]
-    },
-
-    "custom/smallspacer":{
-        "format": " ",
-    },
-
-    "memory": {
-        "interval": 1,
-        "rotate": 270,
-        "format": "{icon}",
-        "format-icons": ["󰝦","󰪞","󰪟","󰪠","󰪡","󰪢","󰪣","󰪤","󰪥"],
-        "max-length": 10
-    },
-
-    "cpu": {
-        "interval": 1,
-        "format": "{icon}",
-        "rotate": 270,
-        "format-icons": ["󰝦","󰪞","󰪟","󰪠","󰪡","󰪢","󰪣","󰪤","󰪥"],
-    },
-
-    "mpris": {
-        "format": "{player_icon} {dynamic}",
-        "format-paused": "<span color='grey'>{status_icon} {dynamic}</span>",
-        "max-length": 50,
-        "player-icons": {
-            "default": "⏸",
-            "mpv": "🎵"
-        },
-        "status-icons": {
-            "paused": "▶" 
-        },
-        // "ignored-players": ["firefox"]
-    },
-
-    "tray": {
-        "icon-size": 16,
-        "rotate": 0,
-        "spacing": 3
-    },
-
-    "group/expand": {
-        "orientation": "horizontal",
-        "drawer": {
-            "transition-duration": 600,
-            "children-class": "not-power",
-            "transition-to-left": true,
-            "click-to-reveal": true
-        },
-        "modules": ["custom/menu","custom/spacer","tray"]
-    },
-
-    "custom/menu":{
-        "format": "󰅃",
-        "rotate": 90,
-    },
-    
-    "custom/notification": {
-        "tooltip": false,
-        "format": "{icon}",
-        "format-icons": {
-            "notification": "󰅸",
-            "none": "󰂜",
-            "dnd-notification": "󰅸",
-            "dnd-none": "󱏨",
-            "inhibited-notification": "󰅸",
-            "inhibited-none": "󰂜",
-            "dnd-inhibited-notification": "󰅸",
-            "dnd-inhibited-none": "󱏨"
-        },
-        "return-type": "json",
-        "exec-if": "which swaync-client",
-        "exec": "swaync-client -swb",
-        "on-click-right": "swaync-client -d -sw",
-        "on-click": "swaync-client -t -sw",
-        "escape": true
-    },
-    
-    "hyprland/window": { 
-        "format": "<span weight='bold' >{class}</span>",
-        "max-length": 120,
-        "icon": false,
-        "icon-size": 13,
-    },
-
-    "custom/power": {
-        "format": "⏻", 
-        "rotate": 0,
-        "on-click": "wlogout", // FIX: Replaced ags with wlogout
-        "on-click-right": "pkill waybar; waybar",
-        "tooltip": true,
-        "tooltip-format": "Power Menu"
-    }, 
-
-    "custom/spacer":{
-        "format": "|"
-    },
-    
+    "height": 32,
+    "spacing": 0,
+    "modules-left": [
+	"hyprland/workspaces",
+	"tray",
+	"custom/weather",
+	"custom/lock",
+	"custom/reboot",
+	"custom/power"
+    ],
+    "modules-center": ["hyprland/window"],
+    "modules-right": [
+	"custom/media",
+	"network",
+	"battery",
+	"bluetooth",
+	"pulseaudio",
+	"custom/temperature",
+	"memory",
+	"cpu",
+	"clock"
+    ],
     "hyprland/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "default": "",
-            "active": "",
-        },
+	"disable-scroll": false,
+	"all-outputs": true,
+	"format": "{icon}",
+	"on-click": "activate",
+	"persistent-workspaces": {
+	    "*":[1,2,3,4]
+	},
+	"format-icons": {
+	    "1": "1",
+	    "2": "2",
+	    "3": "3",
+	    "4": "4",
+	    "5": "5",
+	    "6": "6",
+	    "7": "7",
+	    "8": "8",
+	    "9": "9",
+	    "default": "1",
+	}
     },
-
-    "clock": {
-        "format": "{:%I:%M %p}",
-        "rotate": 0,
-        "on-click": "mode", // FIX: Replaced ags with a default calendar action
-        "tooltip-format": "<tt>{calendar}</tt>",
-        "calendar": {
-            "mode": "month",
-            "mode-mon-col": 3,
-            "on-scroll": 1,
-            "on-click-right": "mode",
-            "format": {
-                "months": "<span color='#ffead3'><b>{}</b></span>",
-                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-                "today": "<span color='#ff6699'><b>{}</b></span>"
-            }
-        },
-        "actions": {
-            "on-click-right": "mode",
-            "on-click-forward": "tz_up",
-            "on-click-backward": "tz_down",
-            "on-scroll-up": "shift_up",
-            "on-scroll-down": "shift_down"
-        }
+    "custom/lock": {
+	"format": "<span color='#FFFFFF'>  </span>",
+	"on-click": "hyprlock",
+	"tooltip": true,
+	"tooltip-format": "Lock screen"
     },
-    
-    "backlight": {
-        "device": "intel_backlight",
-        "rotate": 0,
-        "format": "{icon}",
-        "format-icons": ["󰃞", "󰃝", "󰃟", "󰃠"],
-        "scroll-step": 1,
-        "min-length": 2
+    "custom/reboot": {
+	"format": "<span color='#FFD700'>  </span>",
+	"on-click": "systemctl reboot",
+	"tooltip": true,
+	"tooltip-format": "Reboot system"
     },
-    
-    "group/expand-2": {
-        "orientation": "horizontal",
-        "drawer": {
-            "transition-duration": 600,
-            "children-class": "not-power",
-            "transition-to-left": true,
-            "click-to-reveal": true
-        },
-        // FIX: Removed custom/led as it was defined for a different mouse/command
-        "modules": ["backlight","backlight/slider","custom/smallspacer"] 
+    "custom/power": {
+	"format": "<span color='#FF4040'>  </span>",
+	"on-click": "systemctl poweroff",
+	"tooltip": true,
+	"tooltip": "Shutdown system"
     },
-    
-    "group/expand-3": {
-        "orientation": "horizontal",
-        "drawer": {
-            "transition-duration": 600,
-            "children-class": "not-power",
-            "transition-to-left": true,
-            "click-to-reveal": true
-        },
-        "modules": ["pulseaudio","pulseaudio/slider"]
-    },
-
     "network": {
-        "tooltip": true,
-        "format-wifi": "{icon} ",
-        "format-icons": ["󰤟", "󰤢", "󰤥"],
-        "rotate": 0,
-        "format-ethernet": "󰈀 ",
-        "tooltip-format": "Network: <big><b>{essid}</b></big>\nSignal strength: <b>{signaldBm}dBm ({signalStrength}%)</b>\nFrequency: <b>{frequency}MHz</b>\nInterface: <b>{ifname}</b>\nIP: <b>{ipaddr}/{cidr}</b>\nGateway: <b>{gwaddr}</b>\nNetmask: <b>{netmask}</b>",
-        "format-linked": "󰈀 {ifname} (No IP)",
-        "format-disconnected": " ",
-        "tooltip-format-disconnected": "Disconnected",
-        "on-click": "nm-connection-editor", // FIX: Replaced ags with a standard network tool
-        "interval": 2,
+	"format-wifi": "<span color='#00FFFF'> 󰤨 </span>{essid} ",
+	"format-ethernet": "<span color='#7FFF00'>  </span>Wired ",
+	"tooltip-format": "<span color='#FF1493'> 󰅧 </span>{bandwidthUpBytes} <span color='#00BFFF'> 󰅢 </span>{bandwidthDownBytes}",
+	"format-linked": "<span color='#FFA500'> 󱘖 </span>{iframe} (No IP) ",
+	"format-disconnected": "<span color='#FF4040'>  </span>Disconnected ",
+	"format-alt": "<span color='#00FFFF'> 󰤨 </span>{signalStrength} ",
+	"interval": 1
     },
-
+    "battery": {
+	"states": {
+	    "warning": 30,
+	    "critical": 15
+	},
+	"format": "<span color='#28CD41'> {icon} </span>{capacity}% ",
+	"format-charging": " 󱐋{capacity}%",
+	"interval": 1,
+	"format-icons": ["󰂎", "󰁼", "󰁿", "󰂁", "󰁹"],
+	"tooltip": true
+    },
     "pulseaudio": {
-        "format": "{icon}",
-        "rotate": 0,
-        "format-muted": "婢",
-        "tooltip-format": "{icon} {desc} // {volume}%",
-        "scroll-step": 5,
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        }
+	"format": "<span color='#00FF7F'>{icon}</span>{volume}% ",
+	"format-muted": "<span color='#FF4040'> 󰖁 </span>",
+	"format-icons": {
+	    "headphones": "<span color='#BF00FF'>  </span>",
+	    "hands-free": "<span color='#BF00FF'>  </span>",
+	    "headset": "<span color='#BF00FF'>  </span>",
+	    "phone": "<span color='#BF00FF'>  </span>",
+	    "portable": "<span color='#BF00FF'>  </span>",
+	    "car": "<span color='#BF00FF'>  </span>",
+	    "default": [
+		"<span color='#808080'>  </span>",
+		"<span color='#FFFF66'>  </span>",
+		"<span color='#00FF7F'>  </span>",
+	    ]
+	},
+	"on-click-right": "pavucontrol -t 3",
+	"on-click": "pactl -- set-sink-mute 0 toggle",
+	"tooltip": true,
+	"tooltip-format": "Current system sound: {volume}%"
     },
-
-    // modules for padding //
-    "custom/l_end": {
-        "format": " ",
-        "interval" : "once",
-        "tooltip": false
+    "custom/temperature": {
+	"exec": "sensors | awk '/Tctl:/ {print int($2)}'",
+	"format": "<span color='#FFA500'> </span>{}°C ",
+	"interval": 5,
+	"tooltip": true,
+	"tooltip-format": "CPU temperature: {}°C"
     },
-
-    "custom/r_end": {
-        "format": " ",
-        "interval" : "once",
-        "tooltip": false
+    "custom/media": {
+	"interval": 1,
+	"return-type": "json",
+	"exec": "~/.config/waybar/modules/media.sh",
+	"escape": true
     },
-
-    // Note: Removed unused padding modules (sl_end, sr_end, rl_end, rr_end)
-
-    "custom/padd": {
-        "format": "  ",
-        "interval" : "once",
-        "tooltip": false
+    "custom/weather" : {
+	"format": "{text}",
+	"format-alt": "{alt}: {text}",
+	"format-alt-click": "click-right",
+	"interval": 1800,
+	"return-type": "json",
+	"exec": "~/.config/waybar/modules/weather.sh 'Jadayampalayam'",
+	"exec-if": "ping wttr.in -c1"
     },
-
-    "backlight/slider": {
-        "min": 5,
-        "max": 100,
-        "rotate": 0,
-        "device": "intel_backlight",
-        "scroll-step": 1,
+    "memory": {
+	"format": "<span color='#8A2BE2'>  </span>{used:0.1f}G/{total:0.1f}G ",
+	"tooltip": true,
+	"tooltip-format": "Memory: {used:0.2f}G/{total:0.2f}G"
     },
-    
-    "pulseaudio/slider": {
-        "min": 5,
-        "max": 100,
-        "rotate": 0,
-        "device": "pulseaudio",
-        "scroll-step": 1,
+    "cpu": {
+	"format": "<span color='#FF9F0A'>  </span>{usage}% ",
+	"tooltip": true
+    },
+    "clock": {
+	"interval": 1,
+	"timezone": "Asia/Kolkata",
+	"format": "<span color='#BF00FF'>  </span>{:%H:%M} ",
+	"tooltip": true,
+	"tooltip-format": "{:L%d-%m-%Y %A}"
+    },
+    "tray": {
+	"icon-size": 17,
+	"spacing": 6
+    },
+    "bluetooth": {
+	"format": "<span color='#00BFFF'>  </span>{status}",
+	"format-connected": "<span color='#00BFFF'>  </span>{device_alias}",
+	"format-connected-battery": "<span color='#00BFFF'>  </span>{device_alias}{device_battery_percentage}",
+	"tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+	"tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
     }
 }
