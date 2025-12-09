@@ -1,4 +1,4 @@
-font-family = "JetBrainsMono Nerd Font Mono"
+font-family = "JetBrains Mono"
 font-size = 15
 theme = Catppuccin Frappe
 keybind = ctrl+shift+space=toggle_quick_terminal
