@@ -116,7 +116,8 @@ run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
 if.app-id = "app.zen-browser.zen"
-run = "move-node-to-workspace 2"
+if.window-title-regex-substring = "Picture-in-Picture"
+run = ["layout floating", "move-node-to-workspace 2"]
 
 [[on-window-detected]]
 if.app-id = "com.mitchellh.ghostty"
