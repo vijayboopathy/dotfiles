@@ -96,7 +96,7 @@ after-startup-command = [
     esc = 'mode main'
 
 [workspace-to-monitor-force-assignment]
-"1" = "Built-in Retina Display"
+"1" = "Built-in Display"
 "2" = "LG HDR 4K"
 "3" = "VG271U"
 "4" = "LG HDR 4K"
@@ -127,11 +127,15 @@ run = [
 ]
 
 [[on-window-detected]]
+if.app-id = "com.anthropic.claudefordesktop"
+run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
 if.app-id = "com.microsoft.VSCode"
 run = "move-node-to-workspace 5"
 
 [[on-window-detected]]
 if.app-id = "com.tidal.desktop"
-run = "move-node-to-workspace 4"
+run = "move-node-to-workspace 9"
 
 
