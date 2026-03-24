@@ -20,4 +20,4 @@ alias vim='nvim'
 # alias pbcopy='wl-copy'
 # alias pbpage='wl-paste'
 
-
+alias mothership='ssh vijay@192.168.0.46'
