@@ -51,11 +51,11 @@ Now, it’s time to put Stow to work. From inside the `dotfiles` directory, run 
 
 ```bash
 cd ~/dotfiles
-stow bash
-stow i3
-stow kitty
-stow rofi
-stow i3blocks
+stow -t ~ bash
+stow -t ~ i3
+stow -t ~ kitty
+stow -t ~ rofi
+stow -t ~ i3blocks
 ```
 
 Stow will create symlinks in my home directory. For example, `~/dotfiles/bash/.bashrc` becomes `~/.bashrc`. If I want to remove a set of links, just run:
