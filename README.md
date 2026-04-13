@@ -116,3 +116,66 @@ stow
 
 With my configurations sorted, managing and syncing settings across machines is much less stressful. Stow helps keep things tidy and portable, and my future self will thank myself.
 
+---
+
+## Neovim Shortcuts
+
+> Leader key: `<Space>`
+
+### General
+
+| Key | Mode | Description |
+|-----|------|-------------|
+| `<leader>cd` | Normal | Open file explorer (Ex mode) |
+| `<leader>e` | Normal | Show diagnostic error (float) |
+| `<leader>f` | Normal/Visual | Format buffer |
+| `jj` / `jk` | Insert | Escape to normal mode |
+
+### Git
+
+| Key | Mode | Description |
+|-----|------|-------------|
+| `<leader>gg` | Normal | Open LazyGit |
+
+### Search (Telescope)
+
+| Key | Description |
+|-----|-------------|
+| `<leader><leader>` | Find existing buffers |
+| `<leader>/` | Fuzzy search in current buffer |
+| `<leader>sf` | Search files |
+| `<leader>sg` | Search by grep (live grep) |
+| `<leader>sh` | Search help tags |
+| `<leader>shf` | Search hidden files |
+| `<leader>sk` | Search keymaps |
+| `<leader>sn` | Search Neovim config files |
+| `<leader>sr` | Resume last search |
+| `<leader>ss` | Select Telescope builtin |
+| `<leader>sw` | Search current word |
+| `<leader>sd` | Search diagnostics |
+| `<leader>s/` | Grep in open files |
+| `<leader>s.` | Search recent files |
+
+### LSP (active when LSP is attached)
+
+| Key | Description |
+|-----|-------------|
+| `grd` | Go to definition |
+| `grD` | Go to declaration |
+| `gri` | Go to implementation |
+| `grr` | Go to references |
+| `grt` | Go to type definition |
+| `grn` | Rename symbol |
+| `gra` | Code action |
+| `gO` | Open document symbols |
+| `gW` | Open workspace symbols |
+| `<leader>th` | Toggle inlay hints |
+
+### File Manager (Yazi)
+
+| Key | Description |
+|-----|-------------|
+| `-` | Open Yazi at current file |
+| `<leader>cw` | Open Yazi in working directory |
+| `<Ctrl-Up>` | Resume last Yazi session |
+
