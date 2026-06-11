@@ -13,10 +13,9 @@ start-at-login = true
 after-startup-command = [
   'exec-and-forget open -na "Slack"',
   'exec-and-forget open -na "Microsoft Outlook"',
-  'exec-and-forget open -na "Zen"',
+  'exec-and-forget open -na "com.google.Chrome"',
   'exec-and-forget open -na "Ghostty"',
   'exec-and-forget open -na "TIDAL"',
-  'exec-and-forget open -na "Visual Studio Code"'
 ]
 
 
@@ -115,7 +114,7 @@ if.app-id = "com.microsoft.Outlook"
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
-if.app-id = "app.zen-browser.zen"
+if.app-id = "com.google.Chrome"
 if.window-title-regex-substring = "Picture-in-Picture"
 run = ["layout floating", "move-node-to-workspace 2"]
 
@@ -130,10 +129,6 @@ run = [
 [[on-window-detected]]
 if.app-id = "com.anthropic.claudefordesktop"
 run = "move-node-to-workspace 4"
-
-[[on-window-detected]]
-if.app-id = "com.microsoft.VSCode"
-run = "move-node-to-workspace 5"
 
 [[on-window-detected]]
 if.app-id = "com.tidal.desktop"
