@@ -11,11 +11,11 @@ enable-normalization-opposite-orientation-for-nested-containers = false
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 start-at-login = true
 after-startup-command = [
-  'exec-and-forget open -na "Slack"',
-  'exec-and-forget open -na "Microsoft Outlook"',
-  'exec-and-forget open -na "com.google.Chrome"',
-  'exec-and-forget open -na "Ghostty"',
-  'exec-and-forget open -na "TIDAL"',
+  'exec-and-forget open -a "Slack"',
+  'exec-and-forget open -a "Microsoft Outlook"',
+  'exec-and-forget open -a "com.google.Chrome"',
+  'exec-and-forget open -a "Ghostty"',
+  'exec-and-forget open -a "TIDAL"',
 ]
 
 
