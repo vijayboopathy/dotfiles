@@ -15,7 +15,6 @@ after-startup-command = [
   'exec-and-forget open -a "Microsoft Outlook"',
   'exec-and-forget open -a "com.google.Chrome"',
   'exec-and-forget open -a "Ghostty"',
-  'exec-and-forget open -a "TIDAL"',
 ]
 
 
@@ -33,6 +32,8 @@ after-startup-command = [
     alt-k =         'focus --boundaries-action wrap-around-the-workspace down'
     alt-l =         'focus --boundaries-action wrap-around-the-workspace up'
     alt-semicolon = 'focus --boundaries-action wrap-around-the-workspace right'
+
+    alt-shift-r = 'flatten-workspace-tree'
 
     alt-shift-j = 'move left'
     alt-shift-k = 'move down'
