@@ -106,6 +106,7 @@ inline_height = 15
 history_filter = [
   "^psql",
   "^heroku config:set",
+  "openssl rand -base64 32",
 ]
 
 ## prevent commands run with cwd matching any of these regexes from being written
